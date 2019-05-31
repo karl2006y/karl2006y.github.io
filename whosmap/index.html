@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html>
+<html lang="zh-Hans-TW">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+
+    <!-- <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" /> -->
+    <title>滬's MAP</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+
+    <link href="./all.css" rel="stylesheet" type="text/css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body v-on:keyup.13="currentPoint = 1 "style="background: url(./1.jpg) 0% 0%">
+    <div class="" id="app">
+      <h2 class="mt-3">滬's MAP</h2>
+      <div class=" container mt-1 ">
+        <div class="form row">
+          <div class="form-check form-check-inline col-sm">
+            <label
+              >全部時期
+              <input  class="form-check-input"
+              v-model="mapSVG" name="timegroup" type="radio" value="all"
+            /></label>
+            <label>
+              | 清朝顯示
+              <input class="form-check-input" v-model="mapSVG" name="timegroup" type="radio" value="ching" />
+            </label> 
+            <label
+              >| 日治時期
+              <input
+                 class="form-check-input"
+                 v-model="mapSVG"
+                name="timegroup"
+                type="radio"
+                value="japan"
+            /></label>
+            <label
+              >| 中華民國時期
+              <input  class="form-check-input"
+              v-model="mapSVG" name="timegroup" type="radio" value="roc"
+            /></label>
+            <label
+              >| 無法考證
+              <input
+                 class="form-check-input"
+                 v-model="mapSVG"
+                name="timegroup"
+                type="radio"
+                value="nodata"
+            /></label>
+          </div>
+
+
+          <div class=" rounded backdiv col-sm text-left shadow-lg">
+          
+            <h3 style="  position: absolute; top:40%; left:4%;">
+              <!-- {{ xy.ching[currentPoint] }} -->
+              <div
+
+              style="background-color:rgba(255, 255, 255, 0.9);"
+                :class="fadeout?'fadeOutLeftBig':'fadeInRight'"
+
+              class=" rounded pb-5 pt-3 pl-2 animated shadow-lg"
+                v-for="item in api"
+                v-if="xy.ching[currentPoint].x == item.Latitude && xy.ching[currentPoint].y == item.Longitude "
+              >
+                <h3>滬名：{{ item.Name }}</h3>
+                <h3>緯度：{{ item.Latitude }}</h3>
+                <h3>經度：{{ item.Longitude }}</h3>
+                <h4 class="ml-5 w-25">{{ item.Rule }}</h4>
+                <h4 class="ml-5 w-25">{{ item.Equity }}</h4>
+              </div>
+            </h>
+          </div>
+        </div>
+        <div style="display:inline-flex; width:52%" class="text-center">
+          <input
+            class="input-group-text "
+            style="width:100%"
+            type="number"
+            v-model="currentPoint"
+          />
+          <button class="ml-2 btn btn-outline-dark"@click="currentPoint++;">▲</button>
+          <button class="ml-1 btn btn-outline-dark"@click="currentPoint--;">▼</button>
+
+        </div>
+        <!-- <div
+                class="svgdiv"
+                style="background-image: url( 'http://localhost:8080/svg/roc.svg' )"
+              > -->
+        <div
+          class="mb-5"
+          
+          :style="{background: 'url(' + svgPath + ') 0% 0% / contain no-repeat' , width: '1000pt' , 'height': '630pt' }"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg">
+            <g v-if="mapSVG == 'roc'" id="______">
+              <path
+                v-for="(item,index)  in mapPath.roc"
+                :d="item"
+                :fill="currentPoint==index?'#ffe66f':''"
+                :class="currentPoint==index?'active':''"
+              ></path>
+            </g>
+            <g v-if="mapSVG == 'ching'" id="______">
+              <path
+                v-for="(item,index)  in mapPath.ching"
+                :d="item"
+                :fill="currentPoint==index?'#ffe66f':''"
+                :class="currentPoint==index?'active':''"
+              ></path>
+            </g>
+            <g v-if="mapSVG == 'all'" id="______">
+              <path
+                v-for="(item,index)  in mapPath.all"
+                :d="item"
+                :fill="currentPoint==index?'#ffe66f':''"
+                :class="currentPoint==index?'active':''"
+              ></path>
+            </g>
+            <g v-if="mapSVG == 'japan'" id="______">
+              <path
+                v-for="(item,index)  in mapPath.japan"
+                :d="item"
+                :fill="currentPoint==index?'#ffe66f':''"
+                :class="currentPoint==index?'active':''"
+              ></path>
+            </g>
+            <g v-if="mapSVG == 'nodata'" id="______">
+              <path
+                v-for="(item,index)  in mapPath.nodata"
+                :d="item"
+                :fill="currentPoint==index?'#ffe66f':''"
+                :class="currentPoint==index?'active':''"
+              ></path>
+            </g>
+          </svg>
+        </div>
+      </div>
+     
+    </div>
+
+    <script src="./all.js"></script>
+  </body>
+</html>

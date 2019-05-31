@@ -1,0 +1,32 @@
+html,
+body {
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene {
+  position: absolute;
+}
+
+g#______ path.active {
+  transform-origin: center center;
+  animation: bounce 2s infinite;
+}
+
+.backdiv {
+  width: 1000pt;
+  height: 630pt;
+  position: absolute;
+  top: 12%;
+  right: -300pt;
+  background: url(./back.jpg) 0% 0% / contain no-repeat;
+}
+
+svg {
+  width: 500pt;
+  height: 800pt;
+}
