@@ -44,6 +44,8 @@ const vm = new Vue({
     loading: true
   },
   created: function() {
+    Logger( "v1");
+
     let self = this;
     self.loading = true;
     liff.init(
