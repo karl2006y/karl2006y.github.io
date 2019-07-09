@@ -14,12 +14,12 @@ const vm = new Vue({
   el: "#app",
   data: {
     api: [],
-    liff: []
+    liff: [],
   },
   created: function() {
     let self = this;
-    self.userId = userId;
-    console.log(self.userId);
+    self.liff =  window.liff;
+    console.log(self.liff)
   },
   watch: {
     show: function() {
