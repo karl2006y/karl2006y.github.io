@@ -15,11 +15,13 @@ const vm = new Vue({
   data: {
     api: [],
     liff: [],
+    userId: ''
   },
   created: function() {
     let self = this;
     self.liff =  window.liff;
-    console.log(self.liff);
+    self.userId =  self.lifff.initData.context.userId;
+    console.log(self.userId);
   },
   watch: {
     // show: function() {
