@@ -10,7 +10,33 @@ var vConsole = new VConsole();
 //   }
 // );
 function Logger(data) {
-  console.log('v2',data);
+  console.log('v3',data);
+}
+function getpara(paraName){
+  
+//先取得網址字串，假設此頁網址為「index.aspx?id=U001&name=GQSM」
+var url = location.href;
+
+//再來用去尋找網址列中是否有資料傳遞(QueryString)
+if(url.indexOf('?')!=-1)
+{
+    var id = "";
+    //在此直接將各自的參數資料切割放進ary中
+    var ary = url.split('?')[1].split('&');
+    //此時ary的內容為：
+    //ary[0] = 'id=U001'，ary[1] = 'name=GQSM'
+    
+    //下迴圈去搜尋每個資料參數
+    for(i=0;i<=ary.length-1;i++)
+    {
+        //如果資料名稱為id的話那就把他取出來
+        if(ary[i].split('=')[0] == paraName)
+            return ary[i].split('=')[1]
+    }
+    return undefined
+    
+}
+
 }
 const vm = new Vue({
   el: "#app",
@@ -44,8 +70,7 @@ const vm = new Vue({
     loading: true
   },
   created: function() {
- 
-
+    Logger(getpara('recPer'))
     let self = this;
     self.loading = true;
     liff.init(
