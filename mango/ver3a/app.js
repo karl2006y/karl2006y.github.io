@@ -19,8 +19,16 @@ const vm = new Vue({
   },
   created: function() {
     let self = this;
-    self.liff =  window.liff;
-    self.userId =  self.lifff._initData.context.userId;
+    liff.init(
+      data => {
+        // Now you can call LIFF API
+        self.userId = data.context.userId;
+        console.log("userId vue: ", self.userId);
+      },
+      err => {
+        // LIFF initialization failed
+      }
+    );
     console.log(self.userId);
   },
   watch: {
