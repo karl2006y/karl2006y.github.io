@@ -9,13 +9,10 @@ liff.init(
     // LIFF initialization failed
   }
 );
-liff
-  .getProfile()
-  .then(profile => {
+liff.getProfile().then(profile => {
     const name = profile.displayName;
     console.log("name: ", name);
-  })
-  .catch(err => {
+  }).catch(err => {
     console.log("error", err);
   });
 const vm = new Vue({
@@ -48,7 +45,6 @@ const vm = new Vue({
   },
   created: function() {
     let self = this;
- 
   },
   watch: {
     show: function() {
