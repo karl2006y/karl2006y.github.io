@@ -10,7 +10,7 @@ var vConsole = new VConsole();
 //   }
 // );
 function Logger(data) {
-  console.log(data);
+  console.log('v2',data);
 }
 const vm = new Vue({
   el: "#app",
@@ -44,7 +44,7 @@ const vm = new Vue({
     loading: true
   },
   created: function() {
-    Logger( "v1");
+ 
 
     let self = this;
     self.loading = true;
@@ -52,7 +52,6 @@ const vm = new Vue({
       data => {
         // Now you can call LIFF API
         self.userId = data.context.userId;
-        self.registerData.userData.lineId = data.context.userId;
       },
       err => {
         // LIFF initialization failed
@@ -74,7 +73,6 @@ const vm = new Vue({
     userId: function() {
       let self = this;
       Logger(self.userId + "載入成功");
-    self.registerData.userData.lineId = self.userId;
     Logger( "vue: ",self);
       self.isCustomer();
     },
@@ -146,7 +144,7 @@ const vm = new Vue({
           "&recPer=" +
           self.registerData.userData.recPer +
           "&lineId=" +
-          self.registerData.userData.lineId
+          self.userId
       }).then(resp => {
         self.api = resp.data;
         if (self.api.status) {
