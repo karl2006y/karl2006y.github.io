@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>良匠果時及時訂單</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css' />
+
+</head>
+
+<body>
+  <div id="app">
+    
+
+    <div class="card shadow mb-4 " v-if="show">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold ">良匠果時及時訂單<h6>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-2">
+              <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="jack" value="尚未出貨" v-model="checkedNames">
+                  <label class="form-check-label" for="jack"><h4>尚未出貨</h4></label>
+              </div>
+          </div>
+          <div class="col">
+             
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="mike" value="已出貨" v-model="checkedNames">
+              <label class="form-check-label" for="mike"><h4>已出貨</h4></label>
+          </div>
+          </div>
+        </div>
+
+      
+        <br>
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>單號</th>
+                <th>姓名</th>
+                <th>件數</th>
+                <th>電話</th>
+                <th>住址</th>
+                <th>備註</th>
+                <th>名字</th>
+                <th>電話</th>
+                <th>住址</th>
+                <th>狀態</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="i in api" v-if="checkedNames.lastIndexOf(i.status)!=-1">
+                <td>{{i.id}}</td>
+                <td>{{i.GPname}}</td>
+                <td>{{i.GPphone}}</td>
+                <td>{{i.GPaddress}}</td>
+                <td>{{i.GPcount}}</td>
+                <td>{{i.GPnote}}</td>
+                <td v-if="i.SPname != ''">{{i.SPname}}</td>
+                <td v-else>良匠果時</td>
+                <td v-if="i.SPphone != ''">{{i.SPphone}}</td>
+                <td v-else>0975383397</td>
+                <td v-if="i.SPaddress != ''">{{i.SPaddress}}</td>
+                <td v-else>台南市南化區北平里9之3號
+                </td>
+
+                <td v-if="i.status != '' ">{{i.status}}</td>
+
+
+                <td>
+                  <button v-if="i.status!='已出貨'" type="button" @click="currentChangeId=i.id; currentChangeStatus='已出貨';changeStatus();"
+                    class="btn btn-block btn-info" data-toggle="modal" data-target=".bd-example-modal-lg"><i
+                      class="far fa-hand-point-up"></i> 已出貨</button>
+                    <span v-else>訂單完成</span>
+                </td>
+
+
+
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+
+</html>
