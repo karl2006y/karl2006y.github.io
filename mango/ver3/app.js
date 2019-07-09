@@ -3,7 +3,7 @@ liff.init(
   data => {
     // Now you can call LIFF API
     const userId = data.context.userId;
-    // console.log("userId: ", userId);
+    console.log("userId: ", userId);
   },
   err => {
     // LIFF initialization failed
