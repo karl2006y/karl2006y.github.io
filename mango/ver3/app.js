@@ -50,7 +50,7 @@ const vm = new Vue({
       data => {
         // Now you can call LIFF API
         self.userId = data.context.userId;
-
+        self.registerData.userData.lineId = data.context.userId;
       },
       err => {
         // LIFF initialization failed
@@ -72,7 +72,7 @@ const vm = new Vue({
     userId: function() {
       let self = this;
       Logger(self.userId + "載入成功");
-    self.registerData.userData.lineId = self.userId;+
+    self.registerData.userData.lineId = self.userId;
     Logger( "vue: ",self);
       self.isCustomer();
     },
