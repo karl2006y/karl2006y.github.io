@@ -57,7 +57,6 @@ const vm = new Vue({
       }
     );
     // self.userId = "U729a733b259f5e529339bf36b9f3da13";
-    self.registerData.userData.lineId = self.userId;
    
 
     axios({
@@ -73,6 +72,8 @@ const vm = new Vue({
     userId: function() {
       let self = this;
       Logger(self.userId + "載入成功");
+    self.registerData.userData.lineId = self.userId;+
+    Logger( "vue: ",self);
       self.isCustomer();
     },
     "registerData.city": function() {
