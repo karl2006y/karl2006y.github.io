@@ -3,7 +3,7 @@ liff.init(
   data => {
     // Now you can call LIFF API
     const userId = data.context.userId;
-    console.log("userId: ", userId);
+    // console.log("userId: ", userId);
   },
   err => {
     // LIFF initialization failed
@@ -18,8 +18,8 @@ const vm = new Vue({
   },
   created: function() {
     let self = this;
-    self.liff =  window.liff;
-    console.log(self.liff)
+    self.userId = userId;
+   
   },
   watch: {
     show: function() {
