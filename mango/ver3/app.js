@@ -9,42 +9,17 @@ liff.init(
     // LIFF initialization failed
   }
 );
-liff.getProfile().then(profile => {
-    const name = profile.displayName;
-    console.log("name: ", name);
-  }).catch(err => {
-    console.log("error", err);
-  });
+
 const vm = new Vue({
   el: "#app",
   data: {
     api: [],
-    registerData: {
-      userData: {},
-      user2Data: {},
-      count: 1,
-      isSame: false,
-      city: "選擇...",
-      area: "選擇...",
-      city2: "選擇...",
-      area2: "選擇...",
-      allCity: [],
-      areaList: [],
-      area2List: [],
-      areaShow: false,
-      area2Show: false
-    },
-    login: {
-      userphone: "",
-      password: "",
-      loginBackApi: []
-    },
-    cardLast5Num: [],
-    show: "first",
-    loading: false
+    liff: [],
   },
   created: function() {
     let self = this;
+    self.liff =  window.liff;
+    console.log(self.liff)
   },
   watch: {
     show: function() {
