@@ -44,7 +44,7 @@
     </div>
     <div id="app">
       {{registerData.userData.lineId}}
-      <div class="container center">
+      <div v-if="nowPage=='register'" class="container center">
         <div class="register mt-3">
           <div class="card">
             <div class="card-body">
@@ -178,6 +178,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div v-if="nowPage=='history'" class="container center">
+      已是會員
       </div>
     </div>
     <script src="app.js"></script>

@@ -50,6 +50,7 @@ const vm = new Vue({
       data => {
         // Now you can call LIFF API
         self.userId = data.context.userId;
+
       },
       err => {
         // LIFF initialization failed
@@ -57,6 +58,7 @@ const vm = new Vue({
     );
     // self.userId = "U729a733b259f5e529339bf36b9f3da13";
     self.registerData.userData.lineId = self.userId;
+   
 
     axios({
       methods: "get",
@@ -111,13 +113,14 @@ const vm = new Vue({
         if (self.api.status) {
           self.customerData = self.api;
           self.api = {};
+          self.nowPage='history'
           self.loading = false;
           Logger("會員");
         } else {
           self.api = {};
+          self.nowPage = "register";
           self.loading = false;
           Logger("非會員");
-          self.nowPage = "register";
         }
       });
     },
@@ -145,6 +148,7 @@ const vm = new Vue({
         self.api = resp.data;
         if (self.api.status) {
           self.customerData = self.api;
+          self.nowPage='history'
           self.api = {};
           self.loading = false;
           Logger("註冊成功");
