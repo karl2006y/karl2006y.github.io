@@ -1,14 +1,14 @@
 var vConsole = new VConsole();
-liff.init(
-  data => {
-    // Now you can call LIFF API
-    const userId = data.context.userId;
-    console.log("userId: ", userId);
-  },
-  err => {
-    // LIFF initialization failed
-  }
-);
+// liff.init(
+//   data => {
+//     // Now you can call LIFF API
+//     const userId = data.context.userId;
+//     console.log("userId: ", userId);
+//   },
+//   err => {
+//     // LIFF initialization failed
+//   }
+// );
 
 const vm = new Vue({
   el: "#app",
@@ -19,8 +19,16 @@ const vm = new Vue({
   },
   created: function() {
     let self = this;
-    self.liff =  window.liff;
-    self.userId =  self.lifff._initData.context.userId;
+    liff.init(
+      data => {
+        // Now you can call LIFF API
+        self.userId = data.context.userId;
+        console.log("userId vue: ", self.userId);
+      },
+      err => {
+        // LIFF initialization failed
+      }
+    );
     console.log(self.userId);
   },
   watch: {
