@@ -29,17 +29,25 @@ const vm = new Vue({
   },
   created: function() {
     let self = this;
-    self.loading = true;
-
-    axios({
-      methods: "get",
-      url:
-        "https://script.google.com/macros/s/AKfycbyAxehtbFWqje0TGMRMKteOvE2s0KCsVEboOVOGGjK5W6oQSdz_/exec?city=all"
-    }).then(resp => {
-      self.registerData.allCity = resp.data.data;
-      self.loading = false;
-      console.log(self.registerData.allCity);
-    });
+    liff.init(
+      data => {
+        // Now you can call LIFF API
+        const userId = data.context.userId;
+        console.log("userId: ", userId);
+      },
+      err => {
+        // LIFF initialization failed
+      }
+    );
+    liff
+      .getProfile()
+      .then(profile => {
+        const name = profile.displayName;
+        console.log("name: ", name);
+      })
+      .catch(err => {
+        console.log("error", err);
+      });
   },
   watch: {
     show: function() {
