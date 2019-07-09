@@ -1,4 +1,23 @@
 var vConsole = new VConsole();
+liff.init(
+  data => {
+    // Now you can call LIFF API
+    const userId = data.context.userId;
+    console.log("userId: ", userId);
+  },
+  err => {
+    // LIFF initialization failed
+  }
+);
+liff
+  .getProfile()
+  .then(profile => {
+    const name = profile.displayName;
+    console.log("name: ", name);
+  })
+  .catch(err => {
+    console.log("error", err);
+  });
 const vm = new Vue({
   el: "#app",
   data: {
@@ -29,25 +48,7 @@ const vm = new Vue({
   },
   created: function() {
     let self = this;
-    liff.init(
-      data => {
-        // Now you can call LIFF API
-        const userId = data.context.userId;
-        console.log("userId: ", userId);
-      },
-      err => {
-        // LIFF initialization failed
-      }
-    );
-    liff
-      .getProfile()
-      .then(profile => {
-        const name = profile.displayName;
-        console.log("name: ", name);
-      })
-      .catch(err => {
-        console.log("error", err);
-      });
+ 
   },
   watch: {
     show: function() {
