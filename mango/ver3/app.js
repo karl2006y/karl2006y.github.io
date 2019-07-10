@@ -10,7 +10,7 @@ var vConsole = new VConsole();
 //   }
 // );
 function Logger(data) {
-  console.log('v3',data);
+  console.log('v4',data);
 }
 function getpara(paraName){
   
@@ -95,6 +95,17 @@ const vm = new Vue({
     });
   },
   watch: {
+    nowPage: function() {
+      let self = this;
+      Logger("換頁");
+      if(self.nowPage=='history'){
+        Logger("換頁2");
+        liff.openWindow({
+          url:'line://app/1595482888-YOMDD2xP',
+          external:false
+        });
+      }
+    },
     userId: function() {
       let self = this;
       Logger(self.userId + "載入成功");
