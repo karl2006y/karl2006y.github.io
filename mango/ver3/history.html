@@ -45,13 +45,116 @@
       <br />
     </div>
     <div id="app">
-      v1
+      v2
       <br />
-      1.{{ userId }}
+      1.{{ lineId }}
       <br />
       2.history
-    
+
       
+
+      <div class="historyList mx-3 ">
+          <div v-for="i in api" class="my-3 card shadow-lg rounded">
+              <div class="card-body">
+                <div
+                  class="card mt-2"
+                  @click="show='register'"
+                  style=" cursor: pointer;"
+                >
+                  <img
+                    :src="i.productPic"
+                    class="card-img-top"
+                  />
+      
+                </div>
+      
+                <p></p>
+                <h4>
+                  <b><i class="fa fa-university" aria-hidden="true"></i> 訂單資訊</b>
+                </h4>
+                <small>
+                  <p>訂單編號：{{ i.id }}</p>
+                  <p>訂單件數：{{ i.count }}</p>
+      
+                  <p v-if="i.stauts == '水果準備中'">繳費狀態：已付款</p>
+                  <p v-if="i.stauts == '尚未付款'">繳費狀態：尚未付款</p>
+                  <p v-if="i.stauts == '已付款，核實中'">繳費狀態：已付款</p>
+                  <p v-if="i.stauts == '出貨摟～'">繳費狀態：已付款</p>
+      
+                  <p>收件人姓名：{{ i.name }}</p>
+                  <p>收件人電話：{{ i.phone }}</p>
+                  <p>收件人住址：{{ i.address }}</p>
+                  <p>訂單備註：{{ i.note == "undefined" ? "" : i.note }}</p>
+                </small>
+                <hr />
+                <div v-if="i.stauts == '尚未付款'">
+                  請輸入帳號後五碼
+                  <p></p>
+                  <input class="form-control" v-model="cardLast5Num[i.id]" type="text" />
+                  <button
+                    @click="cardLast5NumHandler(i.id)"
+                    class="btn-block btn btn-warning mt-2"
+                  >
+                    確定
+                  </button>
+                </div>
+                <div v-if="i.stauts == '已付款，核實中'">
+                  核實中...
+                  <p></p>
+                  若有疑問煩請聯絡我們
+                  <button
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    class="btn btn-warning mt-2"
+                  >
+                    聯絡資訊
+                  </button>
+                </div>
+                <div v-if="i.stauts == '水果準備中'">
+                  已核實，水果準備中...
+                  <p></p>
+                  若有疑問煩請聯絡我們
+                  <button
+                    class="btn btn-warning mt-2"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                  >
+                    聯絡資訊
+                  </button>
+                </div>
+                <div v-if="i.stauts == '出貨摟～'">
+                  出貨摟～
+                  <p></p>
+                  若有疑問煩請聯絡我們
+                  <button
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    class="btn btn-warning mt-2"
+                  >
+                    聯絡資訊
+                  </button>
+                </div>
+              </div>
+            </div>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">聯絡資訊</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  ＊獨享優惠社團 （手機操作）: <a href="http://line.me/ti/g/JNjfE79L6B">立即前往!</a>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
     <script>
       var vConsole = new VConsole();
@@ -66,7 +169,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v1", data);
+        console.log("v2", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -85,36 +188,40 @@
         data: {
           api: [],
           liff: [],
-          userId: "",
+          lineId: "",
           api: {},
+          cardLast5Num: [],
           loading: true
         },
         created: function() {
           // Logger();
           let self = this;
           self.loading = true;
- 
-          self.userId = getpara("lineId");
-          self.loading = false;
 
-          // axios({
-          //   methods: "get",
-          //   url:
-          //     "https://script.google.com/macros/s/AKfycbyAxehtbFWqje0TGMRMKteOvE2s0KCsVEboOVOGGjK5W6oQSdz_/exec?city=all"
-          // }).then(resp => {
-          //   self.registerData.allCity = resp.data.data;
-          //   self.loading = false;
-          // });
+          self.lineId = getpara("lineId");
+          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+
+          self.loading = false;
+          var URL =
+            "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=getList&lineId=" +
+            self.lineId;
+          Logger(URL);
+          axios({
+            methods: "get",
+            url: URL
+          }).then(resp => {
+            self.api = resp.data;
+            self.loading = false;
+          });
         },
         watch: {
-
-          userId: function() {
+          lineId: function() {
             let self = this;
             Logger(self.userId + "載入成功");
             // Logger( self);
             // self.isCustomer();
-          },
-          },
+          }
+        },
 
         methods: {
           // isCustomer: function() {
@@ -141,7 +248,6 @@
           //     }
           //   });
           // },
-    
         }
       });
     </script>
