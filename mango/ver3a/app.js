@@ -10,7 +10,7 @@ var vConsole = new VConsole();
 //   }
 // );
 function Logger(data) {
-  console.log('v6',data);
+  console.log('v7',data);
 }
 function getpara(paraName){
   
@@ -101,8 +101,10 @@ const vm = new Vue({
       Logger("換頁");
       if(self.nowPage=='history'){
         Logger("換頁2");
+        var URL = self.historyUrl + "?lineId=" + self.userId
+        Logger(URL);
         liff.openWindow({
-          url: self.historyUrl + "?lineId=" + self.userId,
+          url: URL,
           external:false
         });
       }
