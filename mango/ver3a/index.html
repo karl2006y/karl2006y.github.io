@@ -8,17 +8,18 @@
     <meta charset="UTF-8" />
     <title>良匠果時及時訂單</title>
     <script src="./vconsole.min.js"></script>
-
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css"
@@ -30,7 +31,6 @@
       rel="stylesheet"
     />
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
-
     <style type="text/css">
       body {
         font-family: "Helvetica", "Arial", "LiHei Pro", "黑體-繁", "微軟正黑體",
@@ -45,9 +45,148 @@
       <br />
     </div>
     <div id="app">
-      
-    </div>
+      1.{{userId}}
+      <br>
+      2.{{registerData.userData.lineId}}
+      <div v-if="nowPage=='register'" class="container center">
+        <div class="register mt-3">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div>
+                  <div class="form-group">
+                    <label for="inputUserName1"
+                      ><i class="fas fa-user"></i> 姓名</label
+                    >
+                    <input
+                    v-model="registerData.userData.name"
+                      class="form-control"
+                      id="inputUserName1"
+                      placeholder="請輸入訂購人姓名"
+                      type="text"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="inputcalendar"
+                      ><i class="fa fa-calendar" aria-hidden="true"></i>
+                      出生日期</label
+                    >
+                    <input
+                    v-model="registerData.userData.birthday"
+                    class="form-control"
+                      id="inputcalendar"
+                      type="date"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPhone1"
+                      ><i class="fa fa-phone" aria-hidden="true"></i>
+                      聯絡電話</label
+                    >
+                    <input
+                    v-model="registerData.userData.phone"
+                    class="form-control"
+                      id="inputPhone1"
+                      placeholder="請輸入訂購人聯絡電話"
+                      type="text"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail1"
+                      ><i class="fa fa-envelope" aria-hidden="true"></i>
+                      電子信箱</label
+                    >
+                    <input
+                    v-model="registerData.userData.email"
+                    class="form-control"
+                      id="inputEmail1"
+                      placeholder="請輸入訂購人電子信箱"
+                      type="text"
+                    />
+                  </div>
 
+                  <div v-if="!loading" class="form-row">
+                    <div v-if="registerData.cityShow" class="form-group col-md-6">
+                      <label for="inputCity1">縣/市</label>
+                      <select
+                        @click=""
+                        v-model="registerData.city"
+                        id="inputCity1"
+                        class="form-control"
+                      >
+                        <option disabled selected value="選擇..."
+                          >選擇...</option
+                        >
+                        <option
+                          v-for="city in registerData.allCity"
+                          :value="city"
+                          >{{ city }}</option
+                        >
+                      </select>
+                      
+                    </div>
+                    <small v-if="!(!registerData.cityShow && registerData.areaShow)" class="form-text text-muted"
+                        >選完縣/市請等3秒</small
+                      >
+                    <div
+                      v-if="registerData.areaShow"
+                      class="form-group col-md-6"
+                    >
+                      <label for="inputState1">區</label>
+                      <select
+                        v-model="registerData.area"
+                        id="inputState1"
+                        class="form-control"
+                      >
+                        <option disabled selected value="選擇..."
+                          >選擇...</option
+                        >
+                        <option
+                          v-for="area in registerData.areaList"
+                          :value="area"
+                          >{{ area }}</option
+                        >
+                      </select>
+                    </div>
+                    <div v-if="registerData.allShow" class="form-group col-12">
+                        <label for="inputAddress1"
+                          ><i class="fas fa-home"></i> 地址</label
+                        >
+                        <input
+                        v-model="registerData.userData.address"
+                          class="form-control"
+                          id="inputAddress1"
+                          placeholder="請輸入聯絡地址"
+                          type="text"
+                        />
+                      </div>
+                  </div>
+
+                  <hr />
+                  <div class="form-group">
+                    <label for="inputRecPer"
+                      ><i aria-hidden="true" class="fa fa-user-circle"></i>
+                      推薦人</label
+                    >
+                    <input
+                    v-model="registerData.userData.recPer"
+                    class="form-control"
+                      id="inputRecPer"
+                      placeholder="請輸入推薦人姓名"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <button @click="registerHandler()" class="btn btn-warning btn-block" href="#">註冊並送出</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="nowPage=='history'" class="container center">
+      已是會員
+      </div>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>
