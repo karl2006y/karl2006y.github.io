@@ -10,7 +10,7 @@ var vConsole = new VConsole();
 //   }
 // );
 function Logger(data) {
-  console.log('v4',data);
+  console.log('v5',data);
 }
 function getpara(paraName){
   
@@ -65,7 +65,8 @@ const vm = new Vue({
       areaList: [],
       cityShow: true,
       areaShow: false,
-      allShow: false
+      allShow: false,
+      historyUrl: 'line://app/1595482888-YOMDD2xP',
     },
     loading: true
   },
@@ -101,7 +102,7 @@ const vm = new Vue({
       if(self.nowPage=='history'){
         Logger("換頁2");
         liff.openWindow({
-          url:'line://app/1595482888-YOMDD2xP',
+          url: self.historyUrl + "?lineId=" + self.userId,
           external:false
         });
       }
