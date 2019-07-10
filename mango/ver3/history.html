@@ -45,13 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v2
-      <br />
-      1.{{ lineId }}
-      <br />
-      2.history
-
-      
+    
 
       <div class="historyList mx-3 ">
           <div v-for="i in api" class="my-3 card shadow-lg rounded">
@@ -74,8 +68,8 @@
                 </h4>
                 <small>
                   <p>訂單編號：{{ i.id }}</p>
+                  <p>訂單名稱：{{i.productName}}</p>
                   <p>訂單件數：{{ i.count }}</p>
-      
                   <p v-if="i.stauts == '水果準備中'">繳費狀態：已付款</p>
                   <p v-if="i.stauts == '尚未付款'">繳費狀態：尚未付款</p>
                   <p v-if="i.stauts == '已付款，核實中'">繳費狀態：已付款</p>
@@ -169,7 +163,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v2", data);
+        console.log("v3", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -198,8 +192,8 @@
           let self = this;
           self.loading = true;
 
-          self.lineId = getpara("lineId");
-          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          // self.lineId = getpara("lineId");
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
 
           self.loading = false;
           var URL =
