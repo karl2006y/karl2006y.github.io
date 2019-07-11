@@ -30,6 +30,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <style type="text/css">
       body {
@@ -45,7 +47,7 @@
       <br />
     </div>
     <div id="app">
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <div class="animated slideInLeft btn-group btn-group-toggle" data-toggle="buttons">
         <button @click="search=[];search.push('尚未付款');search.push('已付款，核實中');search.push('水果準備中');search.push('出貨摟～')" class="btn btn-secondary active">
           <input
             type="radio"
@@ -76,7 +78,7 @@
  
 
       <div class="historyList mx-3 ">
-        <div v-for="i in api"  v-if="search.indexOf(i.stauts)!=-1" class="my-3 card shadow-lg rounded">
+        <div v-for="i in api"  v-if="search.indexOf(i.stauts)!=-1" class="animated slideInUp my-3 card shadow-lg rounded">
  
           <div class="card-body">
             <div
