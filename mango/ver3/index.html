@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v9
+      v10
       <br />
       1.{{ userId }}
       <br />
@@ -212,23 +212,14 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v9", data);
+        console.log("v10", data);
       }
       function getpara(paraName) {
-        //先取得網址字串，假設此頁網址為「index.aspx?id=U001&name=GQSM」
         var url = location.href;
-
-        //再來用去尋找網址列中是否有資料傳遞(QueryString)
         if (url.indexOf("?") != -1) {
           var id = "";
-          //在此直接將各自的參數資料切割放進ary中
           var ary = url.split("?")[1].split("&");
-          //此時ary的內容為：
-          //ary[0] = 'id=U001'，ary[1] = 'name=GQSM'
-
-          //下迴圈去搜尋每個資料參數
           for (i = 0; i <= ary.length - 1; i++) {
-            //如果資料名稱為id的話那就把他取出來
             if (ary[i].split("=")[0] == paraName) return ary[i].split("=")[1];
           }
           return undefined;
@@ -267,7 +258,7 @@
           loading: true
         },
         created: function() {
-          Logger(getpara("recPer"));
+          // Logger(getpara("recPer"));
           let self = this;
           self.loading = true;
           liff.init(
@@ -293,9 +284,11 @@
         watch: {
           nowPage: function() {
             let self = this;
-            Logger("換頁");
+    
+
+            Logger("換頁 will to history"+getpara("next").split("#")[0]);
             if (self.nowPage == "history") {
-              Logger("換頁2");
+              Logger("換頁 to history");
               var URL = self.historyUrl + "?lineId=" + self.userId;
               Logger(URL);
               liff.openWindow({
@@ -348,7 +341,7 @@
               if (self.api.status) {
                 self.customerData = self.api;
                 self.api = {};
-                self.nowPage = "history";
+                self.nowPage = getpara("next").split("#")[0];
                 self.loading = false;
                 Logger("會員");
               } else {
@@ -383,7 +376,7 @@
               self.api = resp.data;
               if (self.api.status) {
                 self.customerData = self.api;
-                self.nowPage = "history";
+                self.nowPage = getpara("next").split("#")[0];
                 self.api = {};
                 self.loading = false;
                 Logger("註冊成功");
