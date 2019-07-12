@@ -217,7 +217,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v19", data);
+        console.log("v20", data);
         // console.log("vue", vm);
         
       }
@@ -279,7 +279,7 @@
             }
           );
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
-            self.nextPageUrl = decodeURI(location.href.split('?next=')[1].split("#")[0])
+            self.nextPageUrl = decodeURI(decodeURI(location.href.split('?next=')[1].split("#")[0]))
           axios({
             methods: "get",
             url:
