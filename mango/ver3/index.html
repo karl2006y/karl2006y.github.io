@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v16
+      v17
       <br />
       1.{{ lineId }}
       <br />
@@ -184,13 +184,19 @@
                     />
                   </div>
                 </div>
-                <button
+                <a
+                href="javascript:;"
                   @click="registerHandler()"
                   class="btn btn-warning btn-block"
-                  href="#"
                 >
                   註冊並送出
-                </button>
+              </a>
+              <button
+                  @click="registerHandler()"
+                  class="btn btn-warning btn-block"
+                >
+                  註冊並送出2
+            </button>
               </form>
             </div>
           </div>
@@ -213,7 +219,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v16", data);
+        console.log("v17", data);
         // console.log("vue", vm);
         
       }
