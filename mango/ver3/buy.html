@@ -50,6 +50,7 @@
       <br />
     </div>
     <div id="app" class=" container center">
+      v1
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -342,19 +343,11 @@
           axios({
             methods: "get",
             url:
-              "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
-              self.lineId
-          }).then(resp => {
-            self.api = resp.data;
-          });
-
-          axios({
-            methods: "get",
-            url:
               "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=getProductInfo&name=" +
               getpara("p")
           }).then(resp => {
             self.pApi = resp.data[0];
+            self.isCustomer();
             self.loading = false;
           });
         },
@@ -442,6 +435,34 @@
             liff.openWindow({
               url: URL,
               external: false
+            });
+          },
+          isCustomer: function() {
+            let self = this;
+            self.loading = true;
+            axios({
+              methods: "get",
+              url:
+                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
+                self.lineId
+            }).then(resp => {
+              self.api = resp.data;
+              if (self.api.status) {
+                self.loading = false;
+                Logger("會員");
+              } else {
+                self.loading = false;
+                Logger("非會員");
+                Logger("換頁 to 註冊");
+                var URL =
+                  "line://app/1595482888-40x77W8e?next=1595482888-9BEkk7oY?p=" +
+                  encodeURI(self.pApi.name);
+                Logger(URL);
+                liff.openWindow({
+                  url: URL,
+                  external: false
+                });
+              }
             });
           }
         }
