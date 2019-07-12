@@ -201,16 +201,16 @@
     </div>
     <script>
       var vConsole = new VConsole();
-      // liff.init(
-      //   data => {
-      //     // Now you can call LIFF API
-      //     const lineId = data.context.lineId;
-      //     Logger("lineId: ", lineId);
-      //   },
-      //   err => {
-      //     // LIFF initialization failed
-      //   }
-      // );
+      liff.init(
+        data => {
+          // Now you can call LIFF API
+          const lineId = data.context.lineId;
+          Logger("lineId: ", lineId);
+        },
+        err => {
+          // LIFF initialization failed
+        }
+      );
       function Logger(data) {
         console.log("v10", data);
       }
