@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v10
+      v11
       <br />
       1.{{ lineId }}
       <br />
@@ -195,24 +195,24 @@
           </div>
         </div>
       </div>
-      <div v-if="nowPage!='register'" class="container center">
+      <div v-if="nowPage!='register' && nowPage!=''" class="container center">
         已是會員
       </div>
     </div>
     <script>
       var vConsole = new VConsole();
-      liff.init(
-        data => {
-          // Now you can call LIFF API
-          const lineId = data.context.lineId;
-          Logger("lineId: ", lineId);
-        },
-        err => {
-          // LIFF initialization failed
-        }
-      );
+      // liff.init(
+      //   data => {
+      //     // Now you can call LIFF API
+      //     const lineId = data.context.lineId;
+      //     Logger("lineId: ", lineId);
+      //   },
+      //   err => {
+      //     // LIFF initialization failed
+      //   }
+      // );
       function Logger(data) {
-        console.log("v10", data);
+        console.log("v11", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -265,6 +265,7 @@
             data => {
               // Now you can call LIFF API
               self.lineId = data.context.lineId;
+              Logger(self.lineId)
             },
             err => {
               // LIFF initialization failed
