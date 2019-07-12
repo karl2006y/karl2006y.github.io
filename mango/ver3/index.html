@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v14
+      v15
       <br />
       1.{{ lineId }}
       <br />
@@ -213,8 +213,8 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v14", data);
-        console.log("vue", vm._data);
+        console.log("v15", data);
+        // console.log("vue", vm);
         
       }
       function getpara(paraName) {
@@ -274,7 +274,7 @@
               // LIFF initialization failed
             }
           );
-          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
             self.nextPageUrl = location.href.split('?next=')[1].split("#")[0]
           axios({
             methods: "get",
