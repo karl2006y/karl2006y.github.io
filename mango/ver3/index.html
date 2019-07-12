@@ -47,7 +47,7 @@
     <div id="app">
       v10
       <br />
-      1.{{ userId }}
+      1.{{ lineId }}
       <br />
       2.{{ registerData.userData.lineId }}
       <div v-if="nowPage=='register'" class="container center">
@@ -195,7 +195,7 @@
           </div>
         </div>
       </div>
-      <div v-if="nowPage=='history'" class="container center">
+      <div v-if="nowPage!='register'" class="container center">
         已是會員
       </div>
     </div>
@@ -204,8 +204,8 @@
       // liff.init(
       //   data => {
       //     // Now you can call LIFF API
-      //     const userId = data.context.userId;
-      //     Logger("userId: ", userId);
+      //     const lineId = data.context.lineId;
+      //     Logger("lineId: ", lineId);
       //   },
       //   err => {
       //     // LIFF initialization failed
@@ -220,7 +220,7 @@
           var id = "";
           var ary = url.split("?")[1].split("&");
           for (i = 0; i <= ary.length - 1; i++) {
-            if (ary[i].split("=")[0] == paraName) return ary[i].split("=")[1];
+            if (ary[i].split("=")[0] == paraName) return ary[i].split("=")[1].split("#")[0];
           }
           return undefined;
         }
@@ -230,7 +230,7 @@
         data: {
           api: [],
           liff: [],
-          userId: "",
+          lineId: "",
           api: {},
           customerData: {},
           nowPage: "",
@@ -264,13 +264,13 @@
           liff.init(
             data => {
               // Now you can call LIFF API
-              self.userId = data.context.userId;
+              self.lineId = data.context.lineId;
             },
             err => {
               // LIFF initialization failed
             }
           );
-          // self.userId = "U729a733b259f5e529339bf36b9f3da13";
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
 
           axios({
             methods: "get",
@@ -284,10 +284,11 @@
         watch: {
           nowPage: function() {
             let self = this;
-            Logger("換頁 will to history"+getpara("next").split("#")[0]);
-            if (self.nowPage == "history") {
-              Logger("換頁 to history");
-              var URL = self.historyUrl + "?lineId=" + self.userId;
+            if (self.nowPage != "register") {
+              Logger("換頁 ");
+            Logger("換頁 will to "+getpara("next"));
+
+              var URL = location.href.split('?next=')[1] + "&lineId=" + self.lineId;
               Logger(URL);
               liff.openWindow({
                 url: URL,
@@ -295,9 +296,9 @@
               });
             }
           },
-          userId: function() {
+          lineId: function() {
             let self = this;
-            Logger(self.userId + "載入成功");
+            Logger(self.lineId + "載入成功");
             Logger("vue: ", self);
             self.isCustomer();
           },
@@ -333,13 +334,13 @@
               methods: "get",
               url:
                 "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
-                self.userId
+                self.lineId
             }).then(resp => {
               self.api = resp.data;
               if (self.api.status) {
                 self.customerData = self.api;
                 self.api = {};
-                self.nowPage = getpara("next").split("#")[0];
+                self.nowPage = getpara("next");
                 self.loading = false;
                 Logger("會員");
               } else {
@@ -369,12 +370,12 @@
                 "&recPer=" +
                 self.registerData.userData.recPer +
                 "&lineId=" +
-                self.userId
+                self.lineId
             }).then(resp => {
               self.api = resp.data;
               if (self.api.status) {
                 self.customerData = self.api;
-                self.nowPage = getpara("next").split("#")[0];
+                self.nowPage = getpara("next");
                 self.api = {};
                 self.loading = false;
                 Logger("註冊成功");

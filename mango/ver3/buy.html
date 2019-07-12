@@ -50,7 +50,14 @@
       <br />
     </div>
     <div id="app" class=" container center">
-      <div v-if="!loading" class="register mx-2">
+        <div id="loading" v-if="loading">
+            載入中...
+            <div class="text-center">
+                <div ref="loadingdiv" class="loader-inner ball-scale"></div>
+            </div>
+
+    </div>
+      <div v-if="!loading && !done" class="register mx-2">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
@@ -218,7 +225,8 @@
           </div>
         </div>
       </div>
-      <div v-if="done">
+      
+      <div v-if="!loading && done">
         <div class="card">
           <div class="card-body">
             <div class="card-title">
@@ -234,6 +242,7 @@
               <p>訂單編號：{{ api.data.id }}</p>
               <p>訂單名稱：{{ api.data.productInfo.name }}</p>
               <p>訂單件數：{{ api.data.count }}</p>
+              <p>付款金額：{{ api.data.money }}</p>
               <p>繳費狀態：尚未付款</p>
               <p>收件人姓名：{{ api.data.name }}</p>
               <p>收件人電話：{{ api.data.phone }}</p>
@@ -275,7 +284,8 @@
               @click="gotoHistory()"
               class=" btn btn-warning btn-block "
             >
-              點擊此處前往歷史紀錄填寫匯款後五碼
+            <i
+            class="far fa-hand-point-up"></i>點擊前往歷史紀錄填寫匯款後五碼
             </button>
           </div>
         </div>
@@ -378,6 +388,13 @@
             // Logger( self);
             // self.isCustomer();
           },
+          loading: function() {
+            let self = this;
+            if(self.loading){
+              this.$refs.loadingdiv.loaders();
+              Logger('loadding')
+            }
+          },
           isSame: function() {
             let self = this;
             if (self.isSame) {
@@ -394,6 +411,7 @@
 
         methods: {
           buyHandler: function() {
+            
             let self = this;
             self.loading = true;
             axios({
@@ -416,6 +434,8 @@
                 "&money=" +
                 self.money
             }).then(resp => {
+            self.loading = false;
+              
               self.done = true;
               self.api = resp.data;
             });
