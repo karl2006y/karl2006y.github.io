@@ -45,11 +45,12 @@
       <br />
     </div>
     <div id="app">
-      v12
+      v13
       <br />
       1.{{ lineId }}
       <br />
-      2.{{ registerData.userData.lineId }}
+      2.{{ nextPageUrl }}
+      <br>
       <div v-if="nowPage=='register'" class="container center">
         <div class="register mt-3">
           <div class="card">
@@ -212,7 +213,9 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v12", data);
+        console.log("v13", data);
+        console.log("vue", vm._data);
+        
       }
       function getpara(paraName) {
         var url = location.href;
