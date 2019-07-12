@@ -217,7 +217,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v18", data);
+        console.log("v19", data);
         // console.log("vue", vm);
         
       }
@@ -279,7 +279,7 @@
             }
           );
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
-            self.nextPageUrl = location.href.split('?next=')[1].split("#")[0]
+            self.nextPageUrl = decodeURI(location.href.split('?next=')[1].split("#")[0])
           axios({
             methods: "get",
             url:
@@ -303,7 +303,7 @@
               Logger("換頁 ");
             Logger("換頁 will to "+self.nextPageUrl);
               if((self.nextPageUrl).indexOf('?')!=-1){
-                var URL = 'line://app/'+ decodeURI(self.nextPageUrl) + "&lineId=" + self.lineId;
+                var URL = 'line://app/'+ self.nextPageUrl + "&lineId=" + self.lineId;
 
               }else{
                 var URL = 'line://app/'+ self.nextPageUrl + "?lineId=" + self.lineId;
