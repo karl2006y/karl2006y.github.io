@@ -50,13 +50,12 @@
       <br />
     </div>
     <div id="app" class=" container center">
-        <div id="loading" v-if="loading">
-            載入中...
-            <div class="text-center">
-                <div ref="loadingdiv" class="loader-inner ball-scale"></div>
-            </div>
-
-    </div>
+      <div id="loading" v-if="loading">
+        載入中...
+        <div class="text-center">
+          <div ref="loadingdiv" class="loader-inner ball-scale"></div>
+        </div>
+      </div>
       <div v-if="!loading && !done" class="register mx-2">
         <div class="card">
           <div class="card-body">
@@ -225,7 +224,7 @@
           </div>
         </div>
       </div>
-      
+
       <div v-if="!loading && done">
         <div class="card">
           <div class="card-body">
@@ -237,7 +236,7 @@
                 >
               </h5>
             </div>
-            <hr>
+            <hr />
             <div>
               <p>訂單編號：{{ api.data.id }}</p>
               <p>訂單名稱：{{ api.data.productInfo.name }}</p>
@@ -280,12 +279,8 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <button
-              @click="gotoHistory()"
-              class=" btn btn-warning btn-block "
-            >
-            <i
-            class="far fa-hand-point-up"></i>點擊前往歷史紀錄填寫匯款後五碼
+            <button @click="gotoHistory()" class=" btn btn-warning btn-block ">
+              <i class="far fa-hand-point-up"></i>點擊前往歷史紀錄填寫匯款後五碼
             </button>
           </div>
         </div>
@@ -390,9 +385,9 @@
           },
           loading: function() {
             let self = this;
-            if(self.loading){
+            if (self.loading) {
               this.$refs.loadingdiv.loaders();
-              Logger('loadding')
+              Logger("loadding");
             }
           },
           isSame: function() {
@@ -411,7 +406,6 @@
 
         methods: {
           buyHandler: function() {
-            
             let self = this;
             self.loading = true;
             axios({
@@ -434,8 +428,8 @@
                 "&money=" +
                 self.money
             }).then(resp => {
-            self.loading = false;
-              
+              self.loading = false;
+
               self.done = true;
               self.api = resp.data;
             });
@@ -443,7 +437,7 @@
           gotoHistory: function() {
             let self = this;
             Logger("換頁 to history");
-            var URL ="line://app/1595482888-YOMDD2xP?lineId=" + self.lineId;
+            var URL = "line://app/1595482888-YOMDD2xP?lineId=" + self.lineId;
             Logger(URL);
             liff.openWindow({
               url: URL,
