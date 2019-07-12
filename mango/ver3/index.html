@@ -254,7 +254,7 @@
             areaShow: false,
             allShow: false
           },
-          nextPageUrl="",
+          nextPageUrl:"",
           loading: true
         },
         created: function() {
@@ -271,7 +271,7 @@
               // LIFF initialization failed
             }
           );
-          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
             self.nextPageUrl = location.href.split('?next=')[1]
           axios({
             methods: "get",
