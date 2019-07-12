@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v15
+      v16
       <br />
       1.{{ lineId }}
       <br />
@@ -213,7 +213,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v15", data);
+        console.log("v16", data);
         // console.log("vue", vm);
         
       }
@@ -291,8 +291,13 @@
             if (self.nowPage != "register") {
               Logger("換頁 ");
             Logger("換頁 will to "+self.nextPageUrl);
+              if((self.nextPageUrl).indexOf('?')!=-1){
+                var URL = 'line://app/'+ self.nextPageUrl + "&lineId=" + self.lineId;
 
-              var URL = 'line://app/'+ self.nextPageUrl + "&lineId=" + self.lineId;
+              }else{
+                var URL = 'line://app/'+ self.nextPageUrl + "?lineId=" + self.lineId;
+
+              }
               Logger(URL);
               liff.openWindow({
                 url: URL,
