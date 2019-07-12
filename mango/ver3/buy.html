@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      name="viewport"
+    />
+    <meta charset="UTF-8" />
+    <title>良匠果時訂購單</title>
+    <script src="./vconsole.min.js"></script>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.css.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+    />
+
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <style type="text/css">
+      body {
+        font-family: "Helvetica", "Arial", "LiHei Pro", "黑體-繁", "微軟正黑體",
+          sans-serif;
+      }
+    </style>
+  </head>
+  <body style="background: url(./1.jpg) 0% 0%">
+    <div class="pt-2 container center">
+      <!-- <img class="img-fluid rounded" src="./logorow.png" style="width: 40%;" /> -->
+      <!-- <h5 class="  d-inline"><b>良匠<br>果時</b> </h5> -->
+      <br />
+    </div>
+    <div id="app" class=" container center">
+      <div v-if="!loading" class="register mx-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <b
+                ><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                {{ pApi.name }} 訂購單</b
+              >
+            </h5>
+            <form>
+              <img :src="pApi.img" class="rounded shadow img-fluid" />
+
+              <h4 class="mt-4">
+                <b
+                  ><i class="fa fa-university" aria-hidden="true"></i>
+                  匯款資訊</b
+                >
+              </h4>
+              <small>
+                <p v-for="text in bankInfoList">{{ text }}</p>
+              </small>
+              <hr />
+              <h4 class="mt-4">
+                <b
+                  ><i class="fa fa-info-circle" aria-hidden="true"></i>
+                  訂購資訊</b
+                >
+              </h4>
+              <small>
+                <p v-for="text in buyNeedKnowList">
+                  {{ text }}
+                </p>
+              </small>
+
+              <div class="form-group">
+                <label for="inputCount">
+                  <b>件數</b>
+                </label>
+                <input
+                  min="1"
+                  v-model="buyListData.count"
+                  type="number"
+                  class="form-control"
+                  id="inputCount"
+                  placeholder="請輸入訂購數量"
+                />
+              </div>
+              <span class="" v-if="buyListData.count!=undefined"
+                >$ {{ buyListData.count * pApi.price }} 元</span
+              >
+              <p></p>
+              <div class="form-group">
+                <label for="inputCount"><b>運費</b></label>
+                <div v-if="buyListData.count>pApi.freeShipping-1">
+                  <S>
+                    <span v-if="buyListData.count!=undefined"
+                      >$ {{ buyListData.count * pApi.ShippingPrice }} 元</span
+                    >
+                  </S>
+                  <H4 class="text-danger">免運</H4>
+                </div>
+                <div v-else>
+                  <span v-if="buyListData.count!=undefined"
+                    >$ {{ buyListData.count * pApi.ShippingPrice }} 元</span
+                  >
+                </div>
+                <p></p>
+
+                <div class="text-right">
+                  <h5 v-if="buyListData.count!=undefined">
+                    共：$
+                    {{ money }}
+                  </h5>
+                  <div v-else>
+                    <span v-if="buyListData.count!=undefined"
+                      >$ {{ buyListData.count * pApi.price }} 元</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <h4>
+                <b
+                  ><i class="fa fa-user-circle" aria-hidden="true"></i>
+                  訂購人</b
+                >
+              </h4>
+              <div>
+                <p></p>
+                <p>姓名：{{ api.data.name }}</p>
+                <p>連絡電話：{{ api.data.phone }}</p>
+                <p>通訊地址：{{ api.data.address }}</p>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="defaultCheck1"
+                  v-model="isSame"
+                />
+                <label class="form-check-label" for="defaultCheck1">
+                  訂購人與寄件人相同
+                </label>
+              </div>
+              <hr />
+              <h4>
+                <b><i class="fa fa-user" aria-hidden="true"></i> 收件人</b>
+              </h4>
+
+              <div>
+                <div class="form-group">
+                  <label for="inputUserName2">姓名</label>
+                  <input
+                    v-model="getter.name"
+                    type="text"
+                    class="form-control"
+                    id="inputUserName2"
+                    placeholder="請輸入收件人姓名"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="inputPhone2">聯絡電話</label>
+                  <input
+                    v-model="getter.phone"
+                    type="text"
+                    class="form-control"
+                    id="inputPhone2"
+                    placeholder="請輸入收件人聯絡電話"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">收件人地址</label>
+                  <input
+                    v-model="getter.address"
+                    type="text"
+                    class="form-control"
+                    id="inputAddress2"
+                    placeholder="請輸入收件人地址"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="inputNote">寄件備註</label>
+                  <input
+                    v-model="getter.note"
+                    type="text"
+                    class="form-control"
+                    id="inputNote2"
+                    placeholder="寄件備註"
+                  />
+                </div>
+
+                <button
+                  v-if="getter.name != '' && getter.phone != '' && getter.address != ''"
+                  @click="buyHandler()"
+                  class="btn btn-warning btn-block "
+                >
+                  送出
+                </button>
+                <button v-else class=" btn btn-warning btn-block " disabled>
+                  送出
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div v-if="done">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">
+              <h5>
+                <b
+                  ><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                  {{ pApi.name }} 訂購成功</b
+                >
+              </h5>
+            </div>
+            <hr>
+            <div>
+              <p>訂單編號：{{ api.data.id }}</p>
+              <p>訂單名稱：{{ api.data.productInfo.name }}</p>
+              <p>訂單件數：{{ api.data.count }}</p>
+              <p>繳費狀態：尚未付款</p>
+              <p>收件人姓名：{{ api.data.name }}</p>
+              <p>收件人電話：{{ api.data.phone }}</p>
+              <p>收件人住址：{{ api.data.address }}</p>
+              <p>
+                訂單備註：{{
+                  api.data.note == "undefined" ? "" : api.data.note
+                }}
+              </p>
+            </div>
+            <hr />
+            <div>
+              <img :src="pApi.img" class="rounded shadow img-fluid" />
+              <h4 class="mt-4">
+                <b
+                  ><i class="fa fa-university" aria-hidden="true"></i>
+                  匯款資訊</b
+                >
+              </h4>
+              <small>
+                <p v-for="text in bankInfoList">{{ text }}</p>
+              </small>
+              <hr />
+              <h4 class="mt-4">
+                <b
+                  ><i class="fa fa-info-circle" aria-hidden="true"></i>
+                  訂購資訊</b
+                >
+              </h4>
+              <small>
+                <p v-for="text in buyNeedKnowList">
+                  {{ text }}
+                </p>
+              </small>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+            <button
+              @click="gotoHistory()"
+              class=" btn btn-warning btn-block "
+            >
+              點擊此處前往歷史紀錄填寫匯款後五碼
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var vConsole = new VConsole();
+      liff.init(
+        data => {
+          // Now you can call LIFF API
+          const userId = data.context.userId;
+        },
+        err => {
+          // LIFF initialization failed
+        }
+      );
+      function Logger(data) {
+        console.log("v3", data);
+      }
+      function getpara(paraName) {
+        var url = location.href;
+        if (url.indexOf("?") != -1) {
+          var id = "";
+          var ary = url.split("?")[1].split("&");
+          for (i = 0; i <= ary.length - 1; i++) {
+            if (ary[i].split("=")[0] == paraName)
+              return ary[i].split("=")[1].split("#")[0];
+          }
+          return undefined;
+        }
+      }
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          api: [],
+          pApi: [],
+          lineId: "",
+          buyListData: {
+            count: 1
+          },
+          getter: {
+            name: "",
+            phone: "",
+            address: "",
+            note: ""
+          },
+          loading: true,
+          isSame: false,
+          done: false
+        },
+        created: function() {
+          // Logger();
+          let self = this;
+          self.loading = true;
+
+          // self.lineId = getpara("lineId");
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+
+          axios({
+            methods: "get",
+            url:
+              "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
+              self.lineId
+          }).then(resp => {
+            self.api = resp.data;
+          });
+
+          axios({
+            methods: "get",
+            url:
+              "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=getProductInfo&name=" +
+              getpara("p")
+          }).then(resp => {
+            self.pApi = resp.data[0];
+            self.loading = false;
+          });
+        },
+        computed: {
+          bankInfoList: function() {
+            if (this.pApi.bankInfo) {
+              return this.pApi.bankInfo.split("\\n");
+            }
+          },
+          buyNeedKnowList: function() {
+            if (this.pApi.buyNeedKnow) {
+              return this.pApi.buyNeedKnow.split("\\n");
+            }
+          },
+          money: function() {
+            return this.buyListData.count > this.pApi.freeShipping - 1
+              ? this.buyListData.count * this.pApi.price
+              : this.buyListData.count * this.pApi.price +
+                  this.buyListData.count * this.pApi.ShippingPrice;
+          }
+        },
+        watch: {
+          lineId: function() {
+            let self = this;
+            Logger(self.userId + "載入成功");
+            // Logger( self);
+            // self.isCustomer();
+          },
+          isSame: function() {
+            let self = this;
+            if (self.isSame) {
+              self.getter.name = self.api.data.name;
+              self.getter.phone = self.api.data.phone;
+              self.getter.address = self.api.data.address;
+            } else {
+              self.getter.name = "";
+              self.getter.phone = "";
+              self.getter.address = "";
+            }
+          }
+        },
+
+        methods: {
+          buyHandler: function() {
+            let self = this;
+            self.loading = true;
+            axios({
+              methods: "get",
+              url:
+                "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=addBuy&lineId=" +
+                self.lineId +
+                "&pName=" +
+                self.pApi.name +
+                "&name=" +
+                self.getter.name +
+                "&phone=" +
+                self.getter.phone +
+                "&address=" +
+                self.getter.address +
+                "&count=" +
+                self.buyListData.count +
+                "&note=" +
+                self.getter.note +
+                "&money=" +
+                self.money
+            }).then(resp => {
+              self.done = true;
+              self.api = resp.data;
+            });
+          },
+          gotoHistory: function() {
+            let self = this;
+            Logger("換頁 to history");
+            var URL ="line://app/1595482888-YOMDD2xP?lineId=" + self.lineId;
+            Logger(URL);
+            liff.openWindow({
+              url: URL,
+              external: false
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
