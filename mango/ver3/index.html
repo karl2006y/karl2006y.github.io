@@ -288,7 +288,7 @@
               Logger("換頁 ");
             Logger("換頁 will to "+getpara("next"));
 
-              var URL = location.href.split('?next=')[1] + "&lineId=" + self.lineId;
+              var URL = 'line://app/'+location.href.split('?next=')[1] + "&lineId=" + self.lineId;
               Logger(URL);
               liff.openWindow({
                 url: URL,
