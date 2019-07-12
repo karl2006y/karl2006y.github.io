@@ -30,7 +30,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+    />
 
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <style type="text/css">
@@ -47,8 +50,14 @@
       <br />
     </div>
     <div id="app">
-      <div class="animated slideInLeft btn-group btn-group-toggle" data-toggle="buttons">
-        <button @click="search=[];search.push('尚未付款');search.push('已付款，核實中');search.push('水果準備中');search.push('出貨摟～')" class="btn btn-secondary active">
+      <div
+        class="animated slideInLeft btn-group btn-group-toggle"
+        data-toggle="buttons"
+      >
+        <button
+          @click="search=[];search.push('尚未付款');search.push('已付款，核實中');search.push('水果準備中');search.push('出貨摟～')"
+          class="btn btn-secondary active"
+        >
           <input
             type="radio"
             name="options"
@@ -58,108 +67,132 @@
           />
           全
         </button>
-        <button @click="search=[];search.push('尚未付款')" class="btn btn-secondary">
+        <button
+          @click="search=[];search.push('尚未付款')"
+          class="btn btn-secondary"
+        >
           <input type="radio" name="options" id="option2" autocomplete="off" />
           尚未付款
         </button>
-        <button @click="search=[];search.push('已付款，核實中');search.push('水果準備中');search.push('出貨摟～');" class="btn btn-secondary">
+        <button
+          @click="search=[];search.push('已付款，核實中');search.push('水果準備中');search.push('出貨摟～');"
+          class="btn btn-secondary"
+        >
           <input type="radio" name="options" id="option3" autocomplete="off" />
           已付款
         </button>
-        <button @click="search=[];search.push('尚未付款');search.push('已付款，核實中');search.push('水果準備中')" class="btn btn-secondary">
+        <button
+          @click="search=[];search.push('尚未付款');search.push('已付款，核實中');search.push('水果準備中')"
+          class="btn btn-secondary"
+        >
           <input type="radio" name="options" id="option4" autocomplete="off" />
           尚未出貨
         </button>
-        <button @click="search=[];search.push('出貨摟～')" class="btn btn-secondary">
+        <button
+          @click="search=[];search.push('出貨摟～')"
+          class="btn btn-secondary"
+        >
           <input type="radio" name="options" id="option5" autocomplete="off" />
           已出貨
         </button>
       </div>
- 
+      <div id="loading" v-if="loading">
+        載入中...
+        <div class="text-center">
+          <div ref="loadingdiv" class="loader-inner ball-scale"></div>
+        </div>
+      </div>
 
-      <div class="historyList mx-3 ">
-        <div v-for="i in api"  v-if="search.indexOf(i.stauts)!=-1" class="animated slideInUp my-3 card shadow-lg rounded">
- 
-          <div class="card-body">
-            <div
-              class="card mt-2"
-              @click="show='register'"
-              style=" cursor: pointer;"
-            >
-              <img :src="i.productPic" class="card-img-top" />
-            </div>
+      <div v-if="!loading">
+        <div class="historyList mx-3 ">
+          <div
+            v-for="i in api"
+            v-if="search.indexOf(i.stauts)!=-1"
+            class="animated slideInUp my-3 card shadow-lg rounded"
+          >
+            <div class="card-body">
+              <div
+                class="card mt-2"
+                @click="show='register'"
+                style=" cursor: pointer;"
+              >
+                <img :src="i.productPic" class="card-img-top" />
+              </div>
 
-            <p></p>
-            <h4>
-              <b
-                ><i class="fa fa-university" aria-hidden="true"></i> 訂單資訊</b
-              >
-            </h4>
-            <small><p>{{i.stauts}}</p>
-              <p>訂單編號：{{ i.id }}</p>
-              <p>訂單名稱：{{ i.productName }}</p>
-              <p>訂單件數：{{ i.count }}</p>
-              <p v-if="i.stauts == '水果準備中'">繳費狀態：已付款</p>
-              <p v-if="i.stauts == '尚未付款'">繳費狀態：尚未付款</p>
-              <p v-if="i.stauts == '已付款，核實中'">繳費狀態：已付款</p>
-              <p v-if="i.stauts == '出貨摟～'">繳費狀態：已付款</p>
+              <p></p>
+              <h4>
+                <b
+                  ><i class="fa fa-university" aria-hidden="true"></i>
+                  訂單資訊</b
+                >
+              </h4>
+              <small
+                ><p>{{ i.stauts }}</p>
+                <p>訂單編號：{{ i.id }}</p>
+                <p>訂單名稱：{{ i.productName }}</p>
+                <p>訂單件數：{{ i.count }}</p>
+                <p v-if="i.stauts == '水果準備中'">繳費狀態：已付款</p>
+                <p v-if="i.stauts == '尚未付款'">繳費狀態：尚未付款</p>
+                <p v-if="i.stauts == '已付款，核實中'">繳費狀態：已付款</p>
+                <p v-if="i.stauts == '出貨摟～'">繳費狀態：已付款</p>
 
-              <p>收件人姓名：{{ i.name }}</p>
-              <p>收件人電話：{{ i.phone }}</p>
-              <p>收件人住址：{{ i.address }}</p>
-              <p>訂單備註：{{ i.note == "undefined" ? "" : i.note }}</p>
-            </small>
-            <hr />
-            <div v-if="i.stauts == '尚未付款'">
-              請輸入帳號後五碼
-              <p></p>
-              <input
-                class="form-control"
-                v-model="cardLast5Num[i.id]"
-                type="text"
-              />
-              <button
-                @click="cardLast5NumHandler(i.id)"
-                class="btn-block btn btn-warning mt-2"
-              >
-                確定
-              </button>
-            </div>
-            <div v-if="i.stauts == '已付款，核實中'">
-              核實中...
-              <p></p>
-              若有疑問煩請聯絡我們
-              <button
-                data-toggle="modal"
-                data-target="#exampleModal"
-                class="btn btn-warning mt-2"
-              >
-                聯絡資訊
-              </button>
-            </div>
-            <div v-if="i.stauts == '水果準備中'">
-              已核實，水果準備中...
-              <p></p>
-              若有疑問煩請聯絡我們
-              <button
-                class="btn btn-warning mt-2"
-                data-toggle="modal"
-                data-target="#exampleModal"
-              >
-                聯絡資訊
-              </button>
-            </div>
-            <div v-if="i.stauts == '出貨摟～'">
-              出貨摟～
-              <p></p>
-              若有疑問煩請聯絡我們
-              <button
-                data-toggle="modal"
-                data-target="#exampleModal"
-                class="btn btn-warning mt-2"
-              >
-                聯絡資訊
-              </button>
+                <p>收件人姓名：{{ i.name }}</p>
+                <p>收件人電話：{{ i.phone }}</p>
+                <p>收件人住址：{{ i.address }}</p>
+                <p>訂單備註：{{ i.note == "undefined" ? "" : i.note }}</p>
+              </small>
+              <hr />
+              <div v-if="i.stauts == '尚未付款'">
+                請輸入帳號後五碼
+                <p></p>
+                <input
+                  class="form-control"
+                  v-model="cardLast5Num[i.id]"
+                  type="text"
+                />
+                <button
+                  @click="cardLast5NumHandler(i.id)"
+                  class="btn-block btn btn-warning mt-2"
+                >
+                  確定
+                </button>
+              </div>
+              <div v-if="i.stauts == '已付款，核實中'">
+                核實中...
+                <p></p>
+                若有疑問煩請聯絡我們
+                <button
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  class="btn btn-warning mt-2"
+                >
+                  聯絡資訊
+                </button>
+              </div>
+              <div v-if="i.stauts == '水果準備中'">
+                已核實，水果準備中...
+                <p></p>
+                若有疑問煩請聯絡我們
+                <button
+                  class="btn btn-warning mt-2"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                >
+                  聯絡資訊
+                </button>
+              </div>
+              <div v-if="i.stauts == '出貨摟～'">
+                出貨摟～
+                <p></p>
+                若有疑問煩請聯絡我們
+                <button
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  class="btn btn-warning mt-2"
+                >
+                  聯絡資訊
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -235,9 +268,9 @@
           api: [],
           liff: [],
           lineId: "",
-          api:{},
+          api: {},
           cardLast5Num: [],
-          search:  ["尚未付款","已付款，核實中","水果準備中", "出貨摟～"],
+          search: ["尚未付款", "已付款，核實中", "水果準備中", "出貨摟～"],
           loading: true
         },
         created: function() {
@@ -248,7 +281,6 @@
           self.lineId = getpara("lineId");
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
 
-          self.loading = false;
           var URL =
             "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=getList&lineId=" +
             self.lineId;
