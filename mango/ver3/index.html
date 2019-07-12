@@ -254,7 +254,6 @@
             areaShow: false,
             allShow: false
           },
-          historyUrl: "line://app/1595482888-YOMDD2xP",
           loading: true
         },
         created: function() {
@@ -264,7 +263,7 @@
           liff.init(
             data => {
               // Now you can call LIFF API
-              self.lineId = data.context.lineId;
+              self.lineId = data.context.userId;
               Logger(self.lineId)
             },
             err => {
