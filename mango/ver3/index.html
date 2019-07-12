@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v11
+      v12
       <br />
       1.{{ lineId }}
       <br />
@@ -212,7 +212,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v11", data);
+        console.log("v12", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -254,6 +254,7 @@
             areaShow: false,
             allShow: false
           },
+          nextPageUrl="",
           loading: true
         },
         created: function() {
@@ -271,7 +272,7 @@
             }
           );
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
-
+            self.nextPageUrl = location.href.split('?next=')[1]
           axios({
             methods: "get",
             url:
@@ -286,9 +287,9 @@
             let self = this;
             if (self.nowPage != "register") {
               Logger("換頁 ");
-            Logger("換頁 will to "+getpara("next"));
+            Logger("換頁 will to "+self.nextPageUrl);
 
-              var URL = 'line://app/'+location.href.split('?next=')[1] + "&lineId=" + self.lineId;
+              var URL = 'line://app/'+ self.nextPageUrl + "&lineId=" + self.lineId;
               Logger(URL);
               liff.openWindow({
                 url: URL,
