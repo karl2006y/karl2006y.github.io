@@ -45,7 +45,7 @@
       <br />
     </div>
     <div id="app">
-      v21
+      v22
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -219,7 +219,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v21", data);
+        console.log("v22", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -281,9 +281,8 @@
             }
           );
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
-          self.nextPageUrl = decodeURI(
-            location.href.split("?next=")[1].split("#")[0]
-          );
+          self.nextPageUrl = location.href.split("?next=")[1].split("#")[0];
+
           if (self.nextPageUrl.indexOf("%") != -1) {
             self.nextPageUrl = self.nextPageUrl
               .replace("%3F", "?")
