@@ -31,6 +31,7 @@
       rel="stylesheet"
     />
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+
     <style type="text/css">
       body {
         font-family: "Helvetica", "Arial", "LiHei Pro", "黑體-繁", "微軟正黑體",
@@ -45,7 +46,7 @@
       <br />
     </div>
     <div id="app">
-      v22
+      v23
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -175,20 +176,24 @@
                     </div>
 
                     <hr />
-                    <div class="form-group">
-                      <label for="inputRecPer"
-                        ><i aria-hidden="true" class="fa fa-user-circle"></i>
-                        推薦人</label
-                      >
-                      <input
-                        v-model="registerData.userData.recPer"
-                        class="form-control"
-                        id="inputRecPer"
-                        placeholder="請輸入推薦人姓名"
-                        type="text"
-                      />
+                    <div class="row">
+                      <div class="text-left col">
+                        <label for="inputRecPer"
+                          ><i aria-hidden="true" class="fa fa-user-circle"></i>
+                          推薦人</label
+                        >
+                      </div>
+
+                      <div class="text-center col">
+                        <h5>
+                          <b>
+                            {{ registerData.userData.recPer }}
+                          </b>
+                        </h5>
+                      </div>
                     </div>
                   </div>
+                  <hr />
                   <a
                     href="javascript:;"
                     @click="registerHandler()"
@@ -219,7 +224,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v22", data);
+        console.log("v23", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -250,7 +255,7 @@
               phone: "0931509777",
               email: "karl2015y@gmail.com",
               address: "臺中市北區國豐街133號",
-              recPer: "郭培聖",
+              recPer: "",
               lineId: ""
             },
             count: 1,
@@ -280,8 +285,13 @@
               // LIFF initialization failed
             }
           );
-          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
-          self.nextPageUrl = location.href.split("?next=")[1].split("#")[0];
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          self.getRecperNameHandler(getpara("recPer"));
+          Logger(self.recPer);
+          self.nextPageUrl =
+            location.href.indexOf("next=") != -1  
+              ? location.href.split("next=")[1].split("#")[0]
+              : "";
 
           if (self.nextPageUrl.indexOf("%") != -1) {
             self.nextPageUrl = self.nextPageUrl
@@ -310,12 +320,16 @@
             if (self.nowPage != "register") {
               Logger("換頁 ");
               Logger("換頁 will to " + self.nextPageUrl);
-              if (self.nextPageUrl.indexOf("?") != -1) {
-                var URL =
-                  "line://app/" + self.nextPageUrl + "&lineId=" + self.lineId;
+              if (self.nextPageUrl == "lineAT") {
+                var URL = "https://line.me/R/ti/p/%40352xokan";
               } else {
-                var URL =
-                  "line://app/" + self.nextPageUrl + "?lineId=" + self.lineId;
+                if (self.nextPageUrl.indexOf("?") != -1) {
+                  var URL =
+                    "line://app/" + self.nextPageUrl + "&lineId=" + self.lineId;
+                } else {
+                  var URL =
+                    "line://app/" + self.nextPageUrl + "?lineId=" + self.lineId;
+                }
               }
               Logger(URL);
               liff.openWindow({
@@ -354,6 +368,18 @@
         },
 
         methods: {
+          getRecperNameHandler: function(recperLineId) {
+            let self = this;
+            self.loading = true;
+            axios({
+              methods: "get",
+              url:
+                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=getRecperName&lineId=" +
+                recperLineId
+            }).then(resp => {
+              self.registerData.userData.recPer = resp.data.name;
+            });
+          },
           isCustomer: function() {
             let self = this;
             self.loading = true;
