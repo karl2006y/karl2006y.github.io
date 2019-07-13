@@ -54,7 +54,7 @@
     <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
-      v4
+      v5
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -115,7 +115,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v4", data);
+        console.log("v5", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -203,7 +203,7 @@
               Logger(self.qrImg);
             });
           },
-          getAll: function(recperLineId) {
+          getAll: function() {
             let self = this;
             self.loading = true;
             axios({
