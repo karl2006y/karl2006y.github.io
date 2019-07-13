@@ -54,7 +54,7 @@
     <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
-      v5
+      v6
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -115,7 +115,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v5", data);
+        console.log("v6", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -135,7 +135,6 @@
           width: 200,
           height: 200
         });
-        Logger(TEXT);
         qrcode.makeCode(TEXT);
       }
       const vm = new Vue({
@@ -166,19 +165,15 @@
             self.lineId +
             "&next=lineAT";
           self.loading = false;
-          self.isCustomer(self.lineId);
-          makeCode(self.qrCodeText);
-          self.getRecperNameHandler(self.lineId);
-          self.getAll();
         },
         watch: {
-          // loading: function() {
-          //   let self = this;
-          //   if (self.loading) {
-          //     this.$refs.loadingdiv.loaders();
-          //     Logger("loadding");
-          //   }
-          // },
+          lineId: function() {
+            let self = this;
+            self.isCustomer(self.lineId);
+            makeCode(self.qrCodeText);
+            self.getRecperNameHandler(self.lineId);
+            self.getAll();
+          }
         },
         computed: {
           // bankInfoList: function() {
@@ -235,10 +230,10 @@
                 var URL =
                   "line://app/1595482888-40x77W8e?next=1595482888-x07MMXvP";
                 Logger(URL);
-                // liff.openWindow({
-                //   url: URL,
-                //   external: false
-                // });
+                liff.openWindow({
+                  url: URL,
+                  external: false
+                });
               }
             });
           }
