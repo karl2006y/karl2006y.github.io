@@ -46,7 +46,7 @@
       <br />
     </div>
     <div id="app">
-      v23
+      v24
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -224,7 +224,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v23", data);
+        console.log("v24", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -289,7 +289,7 @@
           self.getRecperNameHandler(getpara("recPer"));
           Logger(self.recPer);
           self.nextPageUrl =
-            location.href.indexOf("next=") != -1  
+            location.href.indexOf("next=") != -1
               ? location.href.split("next=")[1].split("#")[0]
               : "";
 
@@ -421,7 +421,7 @@
                 "&address=" +
                 self.registerData.userData.address +
                 "&recPer=" +
-                getpara("next") +
+                getpara("recPer") +
                 "&lineId=" +
                 self.lineId
             }).then(resp => {
