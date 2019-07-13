@@ -54,7 +54,7 @@
     <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
-      v3
+      v4
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -115,7 +115,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v3", data);
+        console.log("v4", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -160,6 +160,7 @@
             err => {}
           );
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          Logger(self.lineId);
           self.qrCodeText =
             "line://app/1595482888-40x77W8e?recPer=" +
             self.lineId +
@@ -234,10 +235,10 @@
                 var URL =
                   "line://app/1595482888-40x77W8e?next=1595482888-x07MMXvP";
                 Logger(URL);
-                liff.openWindow({
-                  url: URL,
-                  external: false
-                });
+                // liff.openWindow({
+                //   url: URL,
+                //   external: false
+                // });
               }
             });
           }
