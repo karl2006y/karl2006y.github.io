@@ -227,8 +227,7 @@
                 "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
                 self.lineId
             }).then(resp => {
-              self.api = resp.data;
-              if (self.api.status) {
+              if (resp.data.status) {
                 self.loading = false;
                 Logger("會員");
               } else {
