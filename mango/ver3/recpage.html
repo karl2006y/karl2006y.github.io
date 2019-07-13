@@ -166,7 +166,7 @@
             self.lineId +
             "&next=lineAT";
           self.loading = false;
-          self.isCustomer();
+          self.isCustomer(self.lineId);
           makeCode(self.qrCodeText);
           self.getRecperNameHandler(self.lineId);
           self.getAll();
@@ -219,18 +219,18 @@
               self.loading = false;
             });
           },
-          isCustomer: function() {
+          isCustomer: function(lineId) {
             let self = this;
             axios({
               methods: "get",
               url:
                 "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
-                self.lineId
+                lineId
             }).then(resp => {
               if (resp.data.status) {
-                Logger("會員");
+                Logger(lineId + " 是會員");
               } else {
-                Logger("非會員");
+                Logger(lineId + " 非會員");
                 Logger("換頁 to 註冊");
                 var URL =
                   "line://app/1595482888-40x77W8e?next=1595482888-x07MMXvP";
