@@ -38,6 +38,11 @@
         font-family: "Helvetica", "Arial", "LiHei Pro", "黑體-繁", "微軟正黑體",
           sans-serif;
       }
+      .relative {
+        position: absolute;
+        top: 2%;
+        right: 8%;
+      }
     </style>
   </head>
   <body style="background: url(./1.jpg) 0% 0%">
@@ -46,15 +51,7 @@
       <!-- <h5 class="  d-inline"><b>良匠<br>果時</b> </h5> -->
       <br />
     </div>
-    <div class="container">
-      <div class="row align-items-end">
-        <div class="col"></div>
-        <div class="col">
-          <div id="qrcode" style="width:200px; height:200px; "></div>
-        </div>
-        <div class="col"></div>
-      </div>
-    </div>
+    <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
       v1
@@ -65,7 +62,18 @@
         </div>
       </div>
       <div v-if="!loading" class="container">
-        <h5>親愛的 {{ name }} 先生/女士：</h5>
+        <div class="row align-items-end mb-3">
+          <div class="col">
+            <img src="./recqr.png" class="img-fluid" alt="" />
+            <div class="relative" style="width: 30%">
+              <small><b>親愛的 </b></small>
+              <br />
+              <b>{{ name }} </b><small>貴賓：</small>
+
+              <img class="mt-3 img-fluid" :src="qrImg" alt="" />
+            </div>
+          </div>
+        </div>
         <table class="table">
           <thead>
             <tr>
@@ -140,6 +148,7 @@
           api: [],
           lineId: "",
           qrCodeText: "",
+          qrImg: "",
           name: "",
           loading: true
         },
@@ -191,6 +200,8 @@
             }).then(resp => {
               self.loading = false;
               self.name = resp.data.name;
+              self.qrImg = document.images[0].src;
+              Logger(self.qrImg);
             });
           }
         }
