@@ -54,7 +54,7 @@
     <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
-      v1
+      v2
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -83,26 +83,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td class="text-center">Mark</td>
-              <td class="text-center"><i class="fas fa-check-circle"></i></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td class="text-center">Jacob</td>
-              <td class="text-center"><i class="fas fa-check-circle"></i></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td class="text-center">Larry</td>
-              <td class="text-center"><i class="fas fa-check-circle"></i></td>
+            <tr v-for="(item, index ) in api">
+              <th scope="row">{{ index + 1 }}</th>
+              <td class="text-center">{{ item.name }}</td>
+              <td class="text-center" v-if="item.usedＤiscount=='true'">
+                <i class="fas fa-check-circle"></i>
+              </td>
+
+              <td class="text-center" v-else>
+                <i class="fa fa-times"></i>
+              </td>
             </tr>
           </tbody>
         </table>
         <hr />
         <h5 class="text-center">
-          <i class="fas fa-crown"></i> <b>已推薦 5 位會員</b>
+          <i class="fas fa-crown"></i> <b>已推薦 {{ api.length }} 位會員</b>
         </h5>
       </div>
     </div>
@@ -119,7 +115,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v1", data);
+        console.log("v2", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -158,19 +154,21 @@
           self.loading = true;
           liff.init(
             data => {
-              // self.lineId = data.context.userId;
-              // Logger(self.lineId);
+              self.lineId = data.context.userId;
+              Logger(self.lineId);
             },
             err => {}
           );
-          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
           self.qrCodeText =
             "line://app/1595482888-40x77W8e?recPer=" +
             self.lineId +
             "&next=lineAT";
           self.loading = false;
+          self.isCustomer();
           makeCode(self.qrCodeText);
           self.getRecperNameHandler(self.lineId);
+          self.getAll();
         },
         watch: {
           // loading: function() {
@@ -202,6 +200,49 @@
               self.name = resp.data.name;
               self.qrImg = document.images[0].src;
               Logger(self.qrImg);
+            });
+          },
+          getAll: function(recperLineId) {
+            let self = this;
+            self.loading = true;
+            axios({
+              methods: "get",
+              url:
+                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=all"
+            }).then(resp => {
+              resp.data.forEach(item => {
+                if (item.recLineID == self.lineId) {
+                  self.api.push(item);
+                }
+              });
+              self.loading = false;
+            });
+          },
+          isCustomer: function() {
+            let self = this;
+            self.loading = true;
+            axios({
+              methods: "get",
+              url:
+                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
+                self.lineId
+            }).then(resp => {
+              self.api = resp.data;
+              if (self.api.status) {
+                self.loading = false;
+                Logger("會員");
+              } else {
+                self.loading = false;
+                Logger("非會員");
+                Logger("換頁 to 註冊");
+                var URL =
+                  "line://app/1595482888-40x77W8e?next=1595482888-x07MMXvP";
+                Logger(URL);
+                liff.openWindow({
+                  url: URL,
+                  external: false
+                });
+              }
             });
           }
         }
