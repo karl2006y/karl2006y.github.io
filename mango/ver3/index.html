@@ -46,7 +46,7 @@
       <br />
     </div>
     <div id="app">
-      v26
+      v27
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -196,9 +196,18 @@
                   </div>
 
                   <a
+                    v-if="canRig"
                     href="javascript:;"
                     @click="registerHandler()"
                     class="btn btn-warning btn-block"
+                  >
+                    註冊並送出
+                  </a>
+                  <a
+                    v-else
+                    href="javascript:;"
+                    class="btn btn-warning btn-block"
+                    disabled
                   >
                     註冊並送出
                   </a>
@@ -225,7 +234,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v26", data);
+        console.log("v27", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -311,6 +320,16 @@
         computed: {
           haveRecPer: function() {
             return getpara("recPer") != undefined ? true : false;
+          },
+
+          canRig: function() {
+            return (
+              this.registerData.userData.name != "" &&
+              this.registerData.userData.birthday != "" &&
+              this.registerData.userData.phone != "" &&
+              this.registerData.userData.email != "" &&
+              this.registerData.userData.address != ""
+            );
           }
         },
         watch: {
