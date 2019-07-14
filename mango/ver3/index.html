@@ -46,7 +46,7 @@
       <br />
     </div>
     <div id="app">
-      v24
+      v25
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -176,7 +176,7 @@
                     </div>
 
                     <hr />
-                    <div class="row">
+                    <div v-if="haveRecPer" class="row">
                       <div class="text-left col">
                         <label for="inputRecPer"
                           ><i aria-hidden="true" class="fa fa-user-circle"></i>
@@ -224,7 +224,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v24", data);
+        console.log("v25", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -285,7 +285,7 @@
               // LIFF initialization failed
             }
           );
-          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
           self.getRecperNameHandler(getpara("recPer"));
           Logger(self.recPer);
           self.nextPageUrl =
@@ -306,6 +306,11 @@
             self.registerData.allCity = resp.data.data;
             self.loading = false;
           });
+        },
+        computed: {
+          haveRecPer: function() {
+            return getpara("recPer") != undefined ? true : false;
+          }
         },
         watch: {
           loading: function() {
