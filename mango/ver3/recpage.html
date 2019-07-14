@@ -74,6 +74,9 @@
             </div>
           </div>
         </div>
+        <h5 class="text-center">
+          <i class="fas fa-crown"></i> <b>已推薦 {{ api.length }} 位會員</b>
+        </h5>
         <table class="table">
           <thead>
             <tr>
@@ -97,9 +100,17 @@
           </tbody>
         </table>
         <hr />
-        <h5 class="text-center">
-          <i class="fas fa-crown"></i> <b>已推薦 {{ api.length }} 位會員</b>
-        </h5>
+
+        <div class="text-center">
+          <span>
+            <i class="fa fa-bullhorn" aria-hidden="true"></i>
+
+            <b>貴賓</b> 推薦他人將獲得 <b>{{ iGet }}元</b> 現金折價卷 <br />
+            <i class="fa fa-bullhorn" aria-hidden="true"></i>
+
+            <b>被推薦的貴賓</b> 也將獲得 <b>{{ uGet }}元</b> 現金折價卷
+          </span>
+        </div>
       </div>
     </div>
     <script>
@@ -145,6 +156,8 @@
           qrCodeText: "",
           qrImg: "",
           name: "",
+          iGet: "",
+          uGet: "",
           loading: true
         },
         created: function() {
@@ -158,7 +171,7 @@
             },
             err => {}
           );
-          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
 
           self.loading = false;
         },
@@ -190,11 +203,14 @@
             axios({
               methods: "get",
               url:
-                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=getRecperName&lineId=" +
+                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=getRecper&lineId=" +
                 recperLineId
             }).then(resp => {
               self.loading = false;
+              Logger(resp.data);
               self.name = resp.data.name;
+              self.iGet = resp.data.iGet;
+              self.uGet = resp.data.uGet;
               self.qrImg = document.images[0].src;
               Logger(self.qrImg);
             });

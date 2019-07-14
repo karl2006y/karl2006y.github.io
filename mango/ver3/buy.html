@@ -50,7 +50,7 @@
       <br />
     </div>
     <div id="app" class=" container center">
-      v2
+      v3
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -90,13 +90,12 @@
                   {{ text }}
                 </p>
               </small>
-
-              <div class="row">
-                <div class="col">
-                  <div class="form-group">
-                    <label for="inputCount">
-                      <b>件數</b>
-                    </label>
+              <div class="form-group">
+                <label for="inputCount">
+                  <b>件數</b>
+                </label>
+                <div class="row">
+                  <div class="col-6">
                     <input
                       min="1"
                       v-model="buyListData.count"
@@ -106,22 +105,23 @@
                       placeholder="請輸入訂購數量"
                     />
                   </div>
-                </div>
-                <div class="col">
-                  <a
-                    @click="buyListData.count++"
-                    class="btn btn-outline-secondary"
-                    href="javascrip:;"
-                    >+</a
-                  >
-                  <a
-                    @click="buyListData.count--"
-                    class="btn btn-outline-secondary"
-                    href="javascrip:;"
-                    >-</a
-                  >
+                  <div class="col">
+                    <a
+                      @click="buyListData.count++"
+                      class="btn  btn-outline-secondary"
+                      href="javascrip:;"
+                      >+</a
+                    >
+                    <a
+                      @click="buyListData.count--;buyListData.count<=0?buyListData.count=1:buyListData.count=buyListData.count"
+                      class="btn btn-outline-secondary"
+                      href="javascrip:;"
+                      >-</a
+                    >
+                  </div>
                 </div>
               </div>
+
               <span class="" v-if="buyListData.count!=undefined"
                 >$ {{ buyListData.count * pApi.price }} 元</span
               >
@@ -142,11 +142,31 @@
                   >
                 </div>
                 <p></p>
-
+                <div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        優惠卷
+                      </div>
+                    </div>
+                    <select
+                      v-model="chooseDiscountLineId"
+                      class="custom-select"
+                      id="inputGroupSelect01"
+                    >
+                      <option selected value="0">不使用</option>
+                      <option
+                        v-for="dis in discounts"
+                        :value="dis.type+dis.lineId"
+                        >{{ dis.value }}</option
+                      >
+                    </select>
+                  </div>
+                </div>
                 <div class="text-right">
                   <h5 v-if="buyListData.count!=undefined">
                     共：$
-                    {{ money }}
+                    {{ money - Number(chooseDiscount) }}
                   </h5>
                   <div v-else>
                     <span v-if="buyListData.count!=undefined"
@@ -346,17 +366,21 @@
             address: "",
             note: ""
           },
+          discounts: [],
+          chooseDiscountLineId: "0",
+          chooseDiscount: "0",
           loading: true,
           isSame: false,
           done: false
         },
+
         created: function() {
           // Logger();
           let self = this;
           self.loading = true;
 
-          self.lineId = getpara("lineId");
-          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          // self.lineId = getpara("lineId");
+          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
 
           axios({
             methods: "get",
@@ -392,15 +416,27 @@
             let self = this;
             Logger(self.userId + "載入成功");
             // Logger( self);
-            // self.isCustomer();
+            self.getAll();
           },
-          loading: function() {
-            let self = this;
-            if (self.loading) {
-              this.$refs.loadingdiv.loaders();
-              Logger("loadding");
+          chooseDiscountLineId: function() {
+            var self = this;
+            self.discounts.forEach(item => {
+              if (item.type + item.lineId == self.chooseDiscountLineId) {
+                Logger(item.discount);
+                self.chooseDiscount = item.discount;
+              }
+            });
+            if (self.chooseDiscountLineId == "0") {
+              self.chooseDiscount = "0";
             }
           },
+          // loading: function() {
+          //   let self = this;
+          //   if (self.loading) {
+          //     this.$refs.loadingdiv.loaders();
+          //     Logger("loadding");
+          //   }
+          // },
           isSame: function() {
             let self = this;
             if (self.isSame) {
@@ -418,26 +454,31 @@
         methods: {
           buyHandler: function() {
             let self = this;
+            self.useDiscountHandler();
             self.loading = true;
+            var URL =
+              "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=addBuy&lineId=" +
+              self.lineId +
+              "&pName=" +
+              self.pApi.name +
+              "&name=" +
+              self.getter.name +
+              "&phone=" +
+              self.getter.phone +
+              "&address=" +
+              self.getter.address +
+              "&count=" +
+              self.buyListData.count +
+              "&note=" +
+              self.getter.note +
+              "&money=" +
+              self.money +
+              "&discountMoney=" +
+              (self.money - Number(self.chooseDiscount));
+            Logger("買api" + URL);
             axios({
               methods: "get",
-              url:
-                "https://script.google.com/macros/s/AKfycbxe9SvramS2XGso8qJcDHM-uY-7EOTpky_zV9jx3cmXYk_INxJD/exec?method=addBuy&lineId=" +
-                self.lineId +
-                "&pName=" +
-                self.pApi.name +
-                "&name=" +
-                self.getter.name +
-                "&phone=" +
-                self.getter.phone +
-                "&address=" +
-                self.getter.address +
-                "&count=" +
-                self.buyListData.count +
-                "&note=" +
-                self.getter.note +
-                "&money=" +
-                self.money
+              url: URL
             }).then(resp => {
               self.loading = false;
 
@@ -454,6 +495,88 @@
               url: URL,
               external: false
             });
+          },
+          getAll: function() {
+            let self = this;
+            self.loading = true;
+            axios({
+              methods: "get",
+              url:
+                "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=all"
+            }).then(resp => {
+              for (var i = 0; i < resp.data.length; i++) {
+                if (resp.data[i].lineID == self.lineId) {
+                  var Idiscount = resp.data[i].iget;
+                  var myRecPerLineId = resp.data[i].recLineID;
+                  break;
+                }
+              }
+              for (var i = 0; i < resp.data.length; i++) {
+                if (resp.data[i].lineID == myRecPerLineId) {
+                  var myRecPerName = resp.data[i].name;
+                  var myRecPerNameDiscount = resp.data[i].discount;
+                  var usedＤiscount = resp.data[i].usedＤiscount;
+                  break;
+                }
+              }
+              if (usedＤiscount != "true") {
+                self.discounts.push({
+                  type: "beRecED",
+                  discount: myRecPerNameDiscount,
+                  value:
+                    "被" +
+                    myRecPerName +
+                    "介紹獲得" +
+                    myRecPerNameDiscount +
+                    "元",
+                  lineId: myRecPerLineId
+                });
+              }
+
+              resp.data.forEach(item => {
+                if (
+                  item.recLineID == self.lineId &&
+                  item.iUsed != "true" &&
+                  item.usedＤiscount == "true"
+                ) {
+                  self.discounts.push({
+                    type: "rec",
+                    discount: Idiscount,
+                    value: "介紹" + item.name + "獲得" + Idiscount + "元",
+                    lineId: item.lineID
+                  });
+                }
+              });
+              self.loading = false;
+            });
+          },
+          useDiscountHandler: function() {
+            var self = this;
+            if (self.chooseDiscountLineId != "0") {
+              Logger("使用優惠卷");
+              for (var i = 0; i < self.discounts.length; i++) {
+                if (
+                  self.discounts[i].type + self.discounts[i].lineId ==
+                  self.chooseDiscountLineId
+                ) {
+                  var chooseItem = self.discounts[i];
+                  break;
+                }
+              }
+              if (chooseItem.type == "beRecED") {
+                var URL =
+                  "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=useDiscountED&lineId=" +
+                  self.lineId;
+              } else if (chooseItem.type == "rec") {
+                var URL =
+                  "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=useDiscount&lineId=" +
+                  chooseItem.lineId;
+              }
+              axios({
+                methods: "get",
+                url: URL
+              });
+            }
           },
           isCustomer: function() {
             let self = this;
