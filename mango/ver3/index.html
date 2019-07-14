@@ -46,7 +46,7 @@
       <br />
     </div>
     <div id="app">
-      v27
+      v28
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -218,6 +218,13 @@
         </div>
         <div v-if="nowPage!='register' && nowPage!=''" class="container center">
           已是會員
+          <a
+            href="javascript:;"
+            @click="nowPage=='gogogo'"
+            class="btn btn-warning btn-block"
+          >
+            前往官方帳號
+          </a>
         </div>
       </div>
     </div>
@@ -234,7 +241,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v27", data);
+        console.log("v28", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
