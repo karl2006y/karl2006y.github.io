@@ -54,7 +54,7 @@
     <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
-      v6
+      v7
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -115,7 +115,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v6", data);
+        console.log("v7", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -159,17 +159,18 @@
             err => {}
           );
           // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
-          Logger(self.lineId);
-          self.qrCodeText =
-            "line://app/1595482888-40x77W8e?recPer=" +
-            self.lineId +
-            "&next=lineAT";
+
           self.loading = false;
         },
         watch: {
           lineId: function() {
             let self = this;
             self.isCustomer(self.lineId);
+            Logger(self.lineId);
+            self.qrCodeText =
+              "line://app/1595482888-40x77W8e?recPer=" +
+              self.lineId +
+              "&next=lineAT";
             makeCode(self.qrCodeText);
             self.getRecperNameHandler(self.lineId);
             self.getAll();
