@@ -46,7 +46,7 @@
       <br />
     </div>
     <div id="app">
-      v25
+      v26
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -191,9 +191,10 @@
                           </b>
                         </h5>
                       </div>
+                      <hr />
                     </div>
                   </div>
-                  <hr />
+
                   <a
                     href="javascript:;"
                     @click="registerHandler()"
@@ -224,7 +225,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v25", data);
+        console.log("v26", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -250,11 +251,11 @@
           nowPage: "",
           registerData: {
             userData: {
-              name: "林裕凱",
-              birthday: "1998-10-25",
-              phone: "0931509777",
-              email: "karl2015y@gmail.com",
-              address: "臺中市北區國豐街133號",
+              name: "",
+              birthday: "",
+              phone: "",
+              email: "",
+              address: "",
               recPer: "",
               lineId: ""
             },

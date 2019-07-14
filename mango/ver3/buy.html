@@ -50,7 +50,7 @@
       <br />
     </div>
     <div id="app" class=" container center">
-      v1
+      v2
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -91,18 +91,36 @@
                 </p>
               </small>
 
-              <div class="form-group">
-                <label for="inputCount">
-                  <b>件數</b>
-                </label>
-                <input
-                  min="1"
-                  v-model="buyListData.count"
-                  type="number"
-                  class="form-control"
-                  id="inputCount"
-                  placeholder="請輸入訂購數量"
-                />
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="inputCount">
+                      <b>件數</b>
+                    </label>
+                    <input
+                      min="1"
+                      v-model="buyListData.count"
+                      type="number"
+                      class="form-control"
+                      id="inputCount"
+                      placeholder="請輸入訂購數量"
+                    />
+                  </div>
+                </div>
+                <div class="col">
+                  <a
+                    @click="buyListData.count++"
+                    class="btn btn-outline-secondary"
+                    href="javascrip:;"
+                    >+</a
+                  >
+                  <a
+                    @click="buyListData.count--"
+                    class="btn btn-outline-secondary"
+                    href="javascrip:;"
+                    >-</a
+                  >
+                </div>
               </div>
               <span class="" v-if="buyListData.count!=undefined"
                 >$ {{ buyListData.count * pApi.price }} 元</span
