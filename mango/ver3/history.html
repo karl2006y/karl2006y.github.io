@@ -211,7 +211,7 @@
       <div v-if="!loading && api.length==0">
         <div class="container">
           尚未有訂單
-          <button class="btn-block btn btn-warning mt-2">
+          <button @click="gotoMenu()" class="btn-block btn btn-warning mt-2">
             點擊此處立即訂購
           </button>
         </div>
@@ -267,7 +267,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v5", data);
+        console.log("v6", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -322,7 +322,7 @@
         },
 
         methods: {
-          isCustomer: function() {
+          gotoMenu: function() {
             let self = this;
             liff
               .sendMessages([
