@@ -266,7 +266,7 @@
         }
       );
       function Logger(data) {
-        console.log("v6", data);
+        console.log("v7", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -331,7 +331,13 @@
                 }
               ])
               .then(() => {
+                Logger("message sent");
+
                 liff.closeWindow();
+              })
+              .catch(err => {
+                Logger("error");
+                console.log(err);
               });
           }
         }
