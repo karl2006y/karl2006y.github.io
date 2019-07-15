@@ -256,16 +256,15 @@
     </div>
     <script>
       var vConsole = new VConsole();
-      // liff.init(
-      //   data => {
-      //     // Now you can call LIFF API
-      //     const userId = data.context.userId;
-      //     Logger("userId: ", userId);
-      //   },
-      //   err => {
-      //     // LIFF initialization failed
-      //   }
-      // );
+      liff.init(
+        data => {
+          // Now you can call LIFF API
+          // const userId = data.context.userId;
+        },
+        err => {
+          // LIFF initialization failed
+        }
+      );
       function Logger(data) {
         console.log("v6", data);
       }
