@@ -56,22 +56,22 @@
       >
         <button
           @click="search=[];search.push('尚未付款');search.push('已付款，核實中');search.push('水果準備中');search.push('出貨摟～')"
+          class="btn btn-secondary "
+        >
+          <input type="radio" name="options" id="option1" autocomplete="off" />
+          全
+        </button>
+        <button
+          @click="search=[];search.push('尚未付款')"
           class="btn btn-secondary active"
         >
           <input
             type="radio"
             name="options"
-            id="option1"
+            id="option2"
             autocomplete="off"
             checked
           />
-          全
-        </button>
-        <button
-          @click="search=[];search.push('尚未付款')"
-          class="btn btn-secondary"
-        >
-          <input type="radio" name="options" id="option2" autocomplete="off" />
           尚未付款
         </button>
         <button
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-      <div v-if="!loading">
+      <div v-if="!loading && api.length>0">
         <div class="historyList mx-3 ">
           <div
             v-for="i in api"
@@ -116,7 +116,7 @@
                 @click="show='register'"
                 style=" cursor: pointer;"
               >
-                <img :src="i.productPic" class="card-img-top" />
+                <img :src="i.productInfo.img" class="card-img-top" />
               </div>
 
               <p></p>
@@ -126,11 +126,11 @@
                   訂單資訊</b
                 >
               </h4>
-              <small
-                ><p>{{ i.stauts }}</p>
+              <small>
                 <p>訂單編號：{{ i.id }}</p>
                 <p>訂單名稱：{{ i.productName }}</p>
                 <p>訂單件數：{{ i.count }}</p>
+                <p>付款金額：{{ i.money }}</p>
                 <p v-if="i.stauts == '水果準備中'">繳費狀態：已付款</p>
                 <p v-if="i.stauts == '尚未付款'">繳費狀態：尚未付款</p>
                 <p v-if="i.stauts == '已付款，核實中'">繳費狀態：已付款</p>
@@ -142,7 +142,18 @@
                 <p>訂單備註：{{ i.note == "undefined" ? "" : i.note }}</p>
               </small>
               <hr />
+
               <div v-if="i.stauts == '尚未付款'">
+                <h4 class="mt-4">
+                  <b
+                    ><i class="fa fa-university" aria-hidden="true"></i>
+                    匯款資訊</b
+                  >
+                </h4>
+                <p v-for='text in i.productInfo.bankInfo.split("\\n")'>
+                  {{ text }}
+                </p>
+                <hr />
                 請輸入帳號後五碼
                 <p></p>
                 <input
@@ -197,6 +208,14 @@
           </div>
         </div>
       </div>
+      <div v-if="!loading && api.length==0">
+        <div class="container">
+          尚未有訂單
+          <button class="btn-block btn btn-warning mt-2">
+            點擊此處立即訂購
+          </button>
+        </div>
+      </div>
       <div
         class="modal fade"
         id="exampleModal"
@@ -248,7 +267,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v3", data);
+        console.log("v5", data);
       }
       function getpara(paraName) {
         var url = location.href;
@@ -270,7 +289,7 @@
           lineId: "",
           api: {},
           cardLast5Num: [],
-          search: ["尚未付款", "已付款，核實中", "水果準備中", "出貨摟～"],
+          search: ["尚未付款"],
           loading: true
         },
         created: function() {
@@ -303,30 +322,19 @@
         },
 
         methods: {
-          // isCustomer: function() {
-          //   let self = this;
-          //   self.loading = true;
-          //   axios({
-          //     methods: "get",
-          //     url:
-          //       "https://script.google.com/macros/s/AKfycbwJXlWfM0YZ4mN2uU2a1kEp9y6UWl_DvTuTIWD51JXLoHjlGvg/exec?method=isCustomer&id=" +
-          //       self.userId
-          //   }).then(resp => {
-          //     self.api = resp.data;
-          //     if (self.api.status) {
-          //       self.customerData = self.api;
-          //       self.api = {};
-          //       self.nowPage = "history";
-          //       self.loading = false;
-          //       Logger("會員");
-          //     } else {
-          //       self.api = {};
-          //       self.nowPage = "register";
-          //       self.loading = false;
-          //       Logger("非會員");
-          //     }
-          //   });
-          // },
+          isCustomer: function() {
+            let self = this;
+            liff
+              .sendMessages([
+                {
+                  type: "text",
+                  text: "立即訂購"
+                }
+              ])
+              .then(() => {
+                liff.closeWindow();
+              });
+          }
         }
       });
     </script>

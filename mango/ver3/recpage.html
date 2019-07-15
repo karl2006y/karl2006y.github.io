@@ -54,7 +54,7 @@
     <div class="d-none" id="qrcode" style="width:200px; height:200px; "></div>
 
     <div id="app">
-      v7
+      v8
       <div id="loading" v-if="loading">
         載入中...
         <div class="text-center">
@@ -126,7 +126,7 @@
       //   }
       // );
       function Logger(data) {
-        console.log("v7", data);
+        console.log("v8", data);
         // console.log("vue", vm);
       }
       function getpara(paraName) {
@@ -171,7 +171,7 @@
             },
             err => {}
           );
-          self.lineId = "U729a733b259f5e529339bf36b9f3da13";
+          // self.lineId = "U729a733b259f5e529339bf36b9f3da13";
 
           self.loading = false;
         },
@@ -209,8 +209,8 @@
               self.loading = false;
               Logger(resp.data);
               self.name = resp.data.name;
-              self.iGet = resp.data.iGet;
-              self.uGet = resp.data.uGet;
+              self.iGet = resp.data.iget;
+              self.uGet = resp.data.discount;
               self.qrImg = document.images[0].src;
               Logger(self.qrImg);
             });
